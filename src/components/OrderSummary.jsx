@@ -13,15 +13,15 @@ const OrderSummary = () => {
 
     // Mappa delle abbreviazioni per le unità di misura
     const unitAbbreviations = {
-      bottiglia: "BT",
-      cartone: "CR",
-      confezione: "CF",
-      pezzo: "PZ",
-      fusto: "FS",
-      flacone: "FL",
-      cassa: "CS",
-      tanica: "TN",
-      rotolo: "RL",
+      Bottiglia: "BT",
+      Cartone: "CR",
+      Confezione: "CF",
+      Pezzo: "PZ",
+      Fusto: "FS",
+      Flacone: "FL",
+      Cassa: "CS",
+      Tanica: "TN",
+      Rotolo: "RL",
     };
 
     // Costruisci il testo del messaggio dell'ordine

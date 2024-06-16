@@ -81,7 +81,8 @@ const OrderCreation = () => {
             products: selectedProducts.map((product) => ({
               ...product,
               quantity: orderItems[product.id].quantity,
-              unitOfMeasure: orderItems[product.id].unitOfMeasure,
+              unitOfMeasure:
+                orderItems[product.id].unitOfMeasure || product.unitOfMeasure,
             })),
           },
         });
@@ -120,7 +121,6 @@ const OrderCreation = () => {
                 <tr>
                   <th>#</th>
                   <th>Nome</th>
-                  <th>Unità</th>
                   <th>Quantità</th>
                   <th>Unità di Misura</th>
                 </tr>
@@ -130,7 +130,6 @@ const OrderCreation = () => {
                   <tr key={product.id}>
                     <td>{index + 1}</td>
                     <td>{product.name}</td>
-                    <td>{product.unitOfMeasure}</td>
                     <td>
                       <Form.Control
                         type="number"
@@ -158,15 +157,15 @@ const OrderCreation = () => {
                         }
                       >
                         <option value="">Seleziona</option>
-                        <option value="bottiglia">Bottiglia</option>
-                        <option value="cartone">Cartone</option>
-                        <option value="confezione">Confezione</option>
-                        <option value="pezzo">Pezzo</option>
-                        <option value="fusto">Fusto</option>
-                        <option value="flacone">Flacone</option>
-                        <option value="cassa">Cassa</option>
-                        <option value="tanica">Tanica</option>
-                        <option value="rotolo">Rotolo</option>
+                        <option value="Bottiglia">Bottiglia</option>
+                        <option value="Cartone">Cartone</option>
+                        <option value="Confezione">Confezione</option>
+                        <option value="Pezzo">Pezzo</option>
+                        <option value="Fusto">Fusto</option>
+                        <option value="Flacone">Flacone</option>
+                        <option value="Cassa">Cassa</option>
+                        <option value="Tanica">Tanica</option>
+                        <option value="Rotolo">Rotolo</option>
                       </Form.Control>
                     </td>
                   </tr>
