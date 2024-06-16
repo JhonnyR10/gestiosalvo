@@ -8,11 +8,31 @@ const ModalDeleteSupp = ({ id, show, onHide, suppName }) => {
 
   const handleDelete = async () => {
     try {
-      await db.collection("fornitori").doc(id).delete();
-      if (location.pathname.startsWith("/listSupp/")) {
-        navigate("/listSupp");
+      const supplierRef = db.collection("fornitori").doc(id);
+      const supplierDoc = await supplierRef.get();
+
+      if (supplierDoc.exists) {
+        const supplierData = supplierDoc.data();
+        const products = supplierData.products || [];
+
+        // Elimina ogni prodotto nella lista del fornitore
+        const deleteProductPromises = products.map((product) =>
+          db.collection("prodotti").doc(product.id).delete()
+        );
+
+        // Attendi che tutte le eliminazioni siano completate
+        await Promise.all(deleteProductPromises);
+
+        // Elimina il documento del fornitore
+        await supplierRef.delete();
+
+        if (location.pathname.startsWith("/listSupp/")) {
+          navigate("/listSupp");
+        }
+        onHide();
+      } else {
+        console.error("Il documento del fornitore non esiste.");
       }
-      onHide();
     } catch (error) {
       console.error("Errore durante l'eliminazione del fornitore:", error);
     }
