@@ -42,7 +42,7 @@ const ProductsList = () => {
 
     fetchProducts();
     fetchSuppliers();
-  }, []);
+  }, [showAddProductModal]);
 
   const handleSupplierChange = (event) => {
     setSelectedSupplier(event.target.value);
