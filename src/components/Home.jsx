@@ -13,29 +13,6 @@ const Home = () => {
     <div className=" d-flex flex-column align-items-center justify-content-center  mt-5">
       <Card className="login-card mb-4">
         <Card.Body className="p-0 py-4">
-          <div className="d-flex flex-column justify-content-center align-items-center mb-3">
-            <div className="border-bottom border-3 border-primary w-100 mb-4">
-              <Card.Title className="mb-4 fs-3 text-center">Ordini</Card.Title>
-            </div>
-            <div className="w-100">
-              <div className="d-flex justify-content-center align-items-center">
-                <List className="col-4"></List>
-                <NavLink to={"/listSupp"} className="col-8 nav-link">
-                  Tutti gli ordini
-                </NavLink>
-              </div>
-              <div className="d-flex justify-content-center align-items-center">
-                <Plus className="col-4"></Plus>
-                <NavLink to={"/addOrd"} className="col-8 nav-link ">
-                  Aggiungi ordine
-                </NavLink>
-              </div>
-            </div>
-          </div>
-        </Card.Body>
-      </Card>
-      <Card className="login-card mb-4">
-        <Card.Body className="p-0 py-4">
           <div className="d-flex flex-column justify-content-center align-items-center">
             <div className="border-bottom border-3 border-primary w-100 mb-4">
               <Card.Title className="mb-4 fs-3 text-center">
@@ -59,7 +36,7 @@ const Home = () => {
           </div>
         </Card.Body>
       </Card>
-      <Card className="login-card ">
+      <Card className="login-card mb-4">
         <Card.Body className="p-0 py-4">
           <div className="d-flex flex-column justify-content-center align-items-center mb-3">
             <div className="border-bottom border-3 border-primary w-100 mb-4">
@@ -87,6 +64,29 @@ const Home = () => {
                 show={showAddProductModal}
                 onHide={handleCloseAddProductModal}
               />
+            </div>
+          </div>
+        </Card.Body>
+      </Card>
+      <Card className="login-card">
+        <Card.Body className="p-0 py-4">
+          <div className="d-flex flex-column justify-content-center align-items-center mb-3">
+            <div className="border-bottom border-3 border-primary w-100 mb-4">
+              <Card.Title className="mb-4 fs-3 text-center">Ordini</Card.Title>
+            </div>
+            <div className="w-100">
+              <div className="d-flex justify-content-center align-items-center">
+                <List className="col-4"></List>
+                <NavLink to={"/listSupp"} className="col-8 nav-link">
+                  Tutti gli ordini
+                </NavLink>
+              </div>
+              <div className="d-flex justify-content-center align-items-center">
+                <Plus className="col-4"></Plus>
+                <NavLink to={"/addOrd"} className="col-8 nav-link ">
+                  Aggiungi ordine
+                </NavLink>
+              </div>
             </div>
           </div>
         </Card.Body>
