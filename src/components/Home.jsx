@@ -77,7 +77,7 @@ const Home = () => {
             <div className="w-100">
               <div className="d-flex justify-content-center align-items-center">
                 <List className="col-4"></List>
-                <NavLink to={"/listSupp"} className="col-8 nav-link">
+                <NavLink to={"/listOrd"} className="col-8 nav-link">
                   Tutti gli ordini
                 </NavLink>
               </div>

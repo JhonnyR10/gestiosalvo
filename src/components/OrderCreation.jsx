@@ -1,14 +1,16 @@
 import React, { useEffect, useState } from "react";
 import { db } from "../firebaseConfig";
 import { Form, Button, Card, Table } from "react-bootstrap";
-import { useNavigate } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 
 const OrderCreation = () => {
   const [suppliers, setSuppliers] = useState([]);
   const [selectedSupplier, setSelectedSupplier] = useState("");
   const [products, setProducts] = useState([]);
   const [orderItems, setOrderItems] = useState({});
+  const [currentOrderId, setCurrentOrderId] = useState(null);
   const navigate = useNavigate();
+  const location = useLocation();
 
   useEffect(() => {
     const fetchSuppliers = async () => {
@@ -47,6 +49,17 @@ const OrderCreation = () => {
     }
   }, [selectedSupplier]);
 
+  useEffect(() => {
+    if (location.state && location.state.orderData) {
+      const { orderId, supplierId, products, orderItems } =
+        location.state.orderData;
+      setCurrentOrderId(orderId);
+      setSelectedSupplier(supplierId);
+      setProducts(products);
+      setOrderItems(orderItems);
+    }
+  }, [location.state]);
+
   const handleSupplierChange = (event) => {
     setSelectedSupplier(event.target.value);
     setOrderItems({});
@@ -62,7 +75,7 @@ const OrderCreation = () => {
     }));
   };
 
-  const handleCreateOrder = async () => {
+  const saveOrder = async (isDraft) => {
     try {
       const supplierDoc = await db
         .collection("fornitori")
@@ -74,22 +87,66 @@ const OrderCreation = () => {
           (product) => orderItems[product.id] && orderItems[product.id].quantity
         );
 
-        navigate("/order-summary", {
-          state: {
-            supplierName: supplierData.name,
-            supplierPhoneNumber: supplierData.phoneNumber,
-            products: selectedProducts.map((product) => ({
-              ...product,
-              quantity: orderItems[product.id].quantity,
-              unitOfMeasure:
-                orderItems[product.id].unitOfMeasure || product.unitOfMeasure,
-            })),
-          },
-        });
+        const orderData = {
+          supplierId: selectedSupplier,
+          supplierName: supplierData.name,
+          supplierPhoneNumber: supplierData.phoneNumber,
+          products: selectedProducts.map((product) => ({
+            ...product,
+            quantity: orderItems[product.id].quantity,
+            unitOfMeasure:
+              orderItems[product.id].unitOfMeasure || product.unitOfMeasure,
+          })),
+          isDraft,
+        };
+
+        if (!currentOrderId) {
+          orderData.createdAt = new Date();
+        }
+
+        if (currentOrderId) {
+          // Update the existing order
+          await db.collection("ordini").doc(currentOrderId).update(orderData);
+          if (!isDraft) {
+            navigate("/order-summary", {
+              state: {
+                supplierName: supplierData.name,
+                supplierPhoneNumber: supplierData.phoneNumber,
+                products: orderData.products,
+              },
+            });
+          } else {
+            navigate("/listOrd");
+            console.log("Bozza aggiornata");
+          }
+        } else {
+          // Create a new order
+          await db.collection("ordini").add(orderData);
+          if (!isDraft) {
+            navigate("/order-summary", {
+              state: {
+                supplierName: supplierData.name,
+                supplierPhoneNumber: supplierData.phoneNumber,
+                products: orderData.products,
+              },
+            });
+          } else {
+            navigate("/listOrd");
+            console.log("Ordine salvato come bozza");
+          }
+        }
       }
     } catch (error) {
       console.error("Errore durante la creazione dell'ordine:", error);
     }
+  };
+
+  const handleCreateOrder = () => {
+    saveOrder(false);
+  };
+
+  const handleSaveAsDraft = () => {
+    saveOrder(true);
   };
 
   return (
@@ -102,6 +159,7 @@ const OrderCreation = () => {
               as="select"
               value={selectedSupplier}
               onChange={handleSupplierChange}
+              required
             >
               <option value="">Seleziona un fornitore</option>
               {suppliers.map((supplier) => (
@@ -114,15 +172,15 @@ const OrderCreation = () => {
         </Card.Body>
       </Card>
       {selectedSupplier && (
-        <Card className="login-card mb-4 w-75">
+        <Card className="mx-1">
           <Card.Body>
             <Table striped bordered hover responsive size="sm">
               <thead>
                 <tr>
-                  <th>#</th>
-                  <th>Nome</th>
-                  <th>Quantità</th>
-                  <th>Unità di Misura</th>
+                  <th className="align-middle">#</th>
+                  <th className="align-middle">Nome</th>
+                  <th className="small-column align-middle">Quantità</th>
+                  <th className="align-middle">Unità di Misura</th>
                 </tr>
               </thead>
               <tbody>
@@ -130,8 +188,9 @@ const OrderCreation = () => {
                   <tr key={product.id}>
                     <td>{index + 1}</td>
                     <td>{product.name}</td>
-                    <td>
+                    <td className="align-middle">
                       <Form.Control
+                        size="sm"
                         type="number"
                         min="0"
                         value={orderItems[product.id]?.quantity || ""}
@@ -144,7 +203,7 @@ const OrderCreation = () => {
                         }
                       />
                     </td>
-                    <td>
+                    <td className="align-middle">
                       <Form.Control
                         as="select"
                         value={orderItems[product.id]?.unitOfMeasure || ""}
@@ -156,7 +215,7 @@ const OrderCreation = () => {
                           )
                         }
                       >
-                        <option value="">Seleziona</option>
+                        <option value="">{product.unitOfMeasure}</option>
                         <option value="Bottiglia">Bottiglia</option>
                         <option value="Cartone">Cartone</option>
                         <option value="Confezione">Confezione</option>
@@ -166,6 +225,9 @@ const OrderCreation = () => {
                         <option value="Cassa">Cassa</option>
                         <option value="Tanica">Tanica</option>
                         <option value="Rotolo">Rotolo</option>
+                        <option value="Kilogrammo">Kilogrammo</option>
+                        <option value="Grammo">Grammo</option>
+                        <option value="Litro">Litro</option>
                       </Form.Control>
                     </td>
                   </tr>
@@ -173,6 +235,9 @@ const OrderCreation = () => {
               </tbody>
             </Table>
             <Button onClick={handleCreateOrder}>Crea Ordine</Button>
+            <Button onClick={handleSaveAsDraft} className="ml-2">
+              Salva come Bozza
+            </Button>
           </Card.Body>
         </Card>
       )}

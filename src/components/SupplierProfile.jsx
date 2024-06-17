@@ -143,7 +143,7 @@ const SupplierProfile = () => {
           </div>
         </Card.Body>
       </Card>
-      <Card className="login-card mb-4">
+      <Card className="mx-2">
         <Card.Body className="p-0 py-4">
           <div className="d-flex flex-column justify-content-center align-items-center">
             <div className="d-flex row justify-content-center align-items-center pb-4 mb-4 w-100 border-bottom border-3 border-primary">

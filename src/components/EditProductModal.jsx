@@ -57,15 +57,18 @@ const EditProductModal = ({ show, onHide, product, supplierId }) => {
               onChange={(e) => setUnitOfMeasure(e.target.value)}
             >
               <option value="">Seleziona l'unità di misura</option>
-              <option value="bottiglia">Bottiglia</option>
-              <option value="cartone">Cartone</option>
-              <option value="confezione">Confezione</option>
-              <option value="pezzo">Pezzo</option>
-              <option value="fusto">Fusto</option>
-              <option value="flacone">Flacone</option>
-              <option value="cassa">Cassa</option>
-              <option value="tanica">Tanica</option>
-              <option value="rotolo">Rotolo</option>
+              <option value="Bottiglia">Bottiglia</option>
+              <option value="Cartone">Cartone</option>
+              <option value="Confezione">Confezione</option>
+              <option value="Pezzo">Pezzo</option>
+              <option value="Fusto">Fusto</option>
+              <option value="Flacone">Flacone</option>
+              <option value="Cassa">Cassa</option>
+              <option value="Tanica">Tanica</option>
+              <option value="Rotolo">Rotolo</option>
+              <option value="Kilogrammo">Kilogrammo</option>
+              <option value="Grammo">Grammo</option>
+              <option value="Litro">Litro</option>
             </Form.Control>
           </Form.Group>
         </Form>

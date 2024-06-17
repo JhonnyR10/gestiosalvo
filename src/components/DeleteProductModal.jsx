@@ -5,13 +5,12 @@ import { db } from "../firebaseConfig";
 const DeleteProductModal = ({ show, onHide, productId, supplierId }) => {
   const handleDelete = async () => {
     try {
-      //   Elimina il prodotto dal database
-      await db.collection("prodotti").doc(productId).delete();
-      console.log(`Prodotto con ID ${productId} eliminato dal database.`);
-
       // Aggiorna la lista dei prodotti del fornitore
       const supplierRef = db.collection("fornitori").doc(supplierId);
       const supplierDoc = await supplierRef.get();
+      //   Elimina il prodotto dal database
+      await db.collection("prodotti").doc(productId).delete();
+      console.log(`Prodotto con ID ${productId} eliminato dal database.`);
 
       if (supplierDoc.exists) {
         const supplierData = supplierDoc.data();

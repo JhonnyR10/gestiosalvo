@@ -22,6 +22,9 @@ const OrderSummary = () => {
       Cassa: "CS",
       Tanica: "TN",
       Rotolo: "RL",
+      Kilogrammo: "KG",
+      Grammo: "GR",
+      Litro: "LT",
     };
 
     // Costruisci il testo del messaggio dell'ordine
@@ -47,9 +50,9 @@ const OrderSummary = () => {
 
   return (
     <div className="d-flex flex-column align-items-center justify-content-center mt-5">
-      <Card className="login-card mb-4 w-75">
+      <Card className="mx-1">
         <Card.Body>
-          <h3>Riepilogo Ordine</h3>
+          <h3>Riepilogo Ordine per {supplierName}</h3>
           <Table striped bordered hover size="sm">
             <thead>
               <tr>

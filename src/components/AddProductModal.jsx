@@ -10,6 +10,7 @@ const AddProductModal = ({ show, onHide }) => {
 
   useEffect(() => {
     const fetchSuppliers = async () => {
+      console.log("Fetching suppliers...");
       try {
         const suppliersCollection = await db.collection("fornitori").get();
         const suppliersData = suppliersCollection.docs.map((doc) => ({
@@ -70,6 +71,7 @@ const AddProductModal = ({ show, onHide }) => {
               value={productName}
               onChange={(e) => setProductName(e.target.value)}
               placeholder="Inserisci il nome del prodotto"
+              required
             />
           </Form.Group>
           <Form.Group controlId="unitOfMeasure">
@@ -78,6 +80,7 @@ const AddProductModal = ({ show, onHide }) => {
               as="select"
               value={unitOfMeasure}
               onChange={(e) => setUnitOfMeasure(e.target.value)}
+              required
             >
               <option value="">Seleziona l'unità di misura</option>
               <option value="Bottiglia">Bottiglia</option>
@@ -89,6 +92,9 @@ const AddProductModal = ({ show, onHide }) => {
               <option value="Cassa">Cassa</option>
               <option value="Tanica">Tanica</option>
               <option value="Rotolo">Rotolo</option>
+              <option value="Kilogrammo">Kilogrammo</option>
+              <option value="Grammo">Grammo</option>
+              <option value="Litro">Litro</option>
             </Form.Control>
           </Form.Group>
           <Form.Group controlId="supplierId">
@@ -97,6 +103,7 @@ const AddProductModal = ({ show, onHide }) => {
               as="select"
               value={supplierId}
               onChange={(e) => setSupplierId(e.target.value)}
+              required
             >
               <option value="">Seleziona un fornitore</option>
               {suppliers.map((supplier) => (

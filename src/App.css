@@ -13,3 +13,6 @@ body {
 .card-container {
   height: 100vh;
 }
+.small-column {
+  width: 80px; /* Regola questa larghezza secondo le tue necessità */
+}

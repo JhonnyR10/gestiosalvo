@@ -1,8 +1,10 @@
 import React, { useEffect, useState } from "react";
 import { db } from "../firebaseConfig";
 import { Table, Form, Card } from "react-bootstrap";
-import { Plus, Truck } from "react-bootstrap-icons";
+import { Pencil, Plus, Trash, Truck } from "react-bootstrap-icons";
 import AddProductModal from "./AddProductModal";
+import EditProductModal from "./EditProductModal";
+import DeleteProductModal from "./DeleteProductModal";
 
 const ProductsList = () => {
   const [products, setProducts] = useState([]);
@@ -12,6 +14,30 @@ const ProductsList = () => {
 
   const handleShowAddProductModal = () => setShowAddProductModal(true);
   const handleCloseAddProductModal = () => setShowAddProductModal(false);
+
+  const [selectedProduct, setSelectedProduct] = useState(null);
+  const [showDeleteModal, setShowDeleteModal] = useState(false);
+  const [showEditModal, setShowEditModal] = useState(false);
+
+  const handleShowDeleteModal = (product) => {
+    setSelectedProduct(product);
+    setShowDeleteModal(true);
+  };
+
+  const handleCloseDeleteModal = () => {
+    setShowDeleteModal(false);
+    setSelectedProduct(null);
+  };
+
+  const handleShowEditModal = (product) => {
+    setSelectedProduct(product);
+    setShowEditModal(true);
+  };
+
+  const handleCloseEditModal = () => {
+    setShowEditModal(false);
+    setSelectedProduct(null);
+  };
 
   useEffect(() => {
     const fetchProducts = async () => {
@@ -42,7 +68,7 @@ const ProductsList = () => {
 
     fetchProducts();
     fetchSuppliers();
-  }, [showAddProductModal]);
+  }, [showAddProductModal, showDeleteModal, showEditModal]);
 
   const handleSupplierChange = (event) => {
     setSelectedSupplier(event.target.value);
@@ -77,7 +103,7 @@ const ProductsList = () => {
           </Form.Group>
         </Card.Body>
       </Card>
-      <Card className="login-card w-75">
+      <Card className="mx-1">
         <Card.Body>
           <div className="d-flex justify-content-center align-items-center pb-4 mb-4 w-100 border-bottom border-3 border-primary">
             <Plus className="col-3"></Plus>
@@ -105,10 +131,32 @@ const ProductsList = () => {
               {filteredProducts.length > 0 ? (
                 filteredProducts.map((product, index) => (
                   <tr key={product.id}>
-                    <td>{index + 1}</td>
-                    <td>{product.name}</td>
-                    <td>{product.unitOfMeasure}</td>
+                    <td className="text-center align-middle">{index + 1}</td>
                     <td>
+                      <div className="border-bottom pb-1">{product.name}</div>
+                      <div className="d-flex justify-content-around mt-1">
+                        <div>
+                          <Pencil
+                            className="text-warning"
+                            onClick={() => {
+                              handleShowEditModal(product);
+                            }}
+                          ></Pencil>
+                        </div>
+                        <div>
+                          <Trash
+                            className="text-danger"
+                            onClick={() => {
+                              handleShowDeleteModal(product);
+                            }}
+                          ></Trash>
+                        </div>
+                      </div>
+                    </td>
+                    <td className="text-center align-middle">
+                      {product.unitOfMeasure}
+                    </td>
+                    <td className="text-center align-middle">
                       {
                         suppliers.find(
                           (supplier) => supplier.id === product.supplierId
@@ -128,6 +176,22 @@ const ProductsList = () => {
           </Table>
         </Card.Body>
       </Card>
+      {selectedProduct && (
+        <>
+          <EditProductModal
+            show={showEditModal}
+            onHide={handleCloseEditModal}
+            product={selectedProduct}
+            supplierId={selectedProduct.supplierId}
+          />
+          <DeleteProductModal
+            show={showDeleteModal}
+            onHide={handleCloseDeleteModal}
+            productId={selectedProduct.id}
+            supplierId={selectedProduct.supplierId}
+          />
+        </>
+      )}
     </div>
   );
 };

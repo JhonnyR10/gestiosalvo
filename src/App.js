@@ -11,6 +11,7 @@ import SupplierProfile from "./components/SupplierProfile";
 import ProductsList from "./components/ProductsList";
 import OrderCreation from "./components/OrderCreation";
 import OrderSummary from "./components/OrderSummary";
+import OrdersList from "./components/OrdersList";
 
 function App() {
   return (
@@ -25,6 +26,7 @@ function App() {
         <Route path="/listSupp/:id" element={<SupplierProfile />} />
         <Route path="/listProd" element={<ProductsList />} />
         <Route path="/order-summary" element={<OrderSummary />} />
+        <Route path="/listOrd" element={<OrdersList />} />
       </Routes>
     </BrowserRouter>
   );
