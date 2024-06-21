@@ -11,6 +11,7 @@ const ProductsList = () => {
   const [products, setProducts] = useState([]);
   const [suppliers, setSuppliers] = useState([]);
   const [selectedSupplier, setSelectedSupplier] = useState("");
+  const [searchTerm, setSearchTerm] = useState("");
   const [showAddProductModal, setShowAddProductModal] = useState(false);
 
   const handleShowAddProductModal = () => setShowAddProductModal(true);
@@ -74,10 +75,14 @@ const ProductsList = () => {
   const handleSupplierChange = (event) => {
     setSelectedSupplier(event.target.value);
   };
-
-  const filteredProducts = selectedSupplier
-    ? products.filter((product) => product.supplierId === selectedSupplier)
-    : products;
+  const handleSearchChange = (event) => {
+    setSearchTerm(event.target.value);
+  };
+  const filteredProducts = products.filter(
+    (product) =>
+      (selectedSupplier ? product.supplierId === selectedSupplier : true) &&
+      product.name.toLowerCase().includes(searchTerm.toLowerCase())
+  );
 
   return (
     <>
@@ -103,6 +108,15 @@ const ProductsList = () => {
                   </option>
                 ))}
               </Form.Control>
+            </Form.Group>
+            <Form.Group controlId="formSearch">
+              <Form.Label>Cerca per Nome</Form.Label>
+              <Form.Control
+                type="text"
+                placeholder="Cerca prodotto"
+                value={searchTerm}
+                onChange={handleSearchChange}
+              />
             </Form.Group>
           </Card.Body>
         </Card>
