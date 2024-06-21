@@ -82,7 +82,7 @@ const ProductsList = () => {
   return (
     <>
       <Navbar />
-      <div className="d-flex flex-column align-items-center justify-content-center mt-5">
+      <div className="d-flex flex-column align-items-center justify-content-center mt-5 w-100">
         <Card className="login-card mb-4 w-75">
           <Card.Body>
             <div className="d-flex justify-content-center align-items-center pb-4 mb-4 w-100 border-bottom border-3 border-primary">
@@ -106,12 +106,12 @@ const ProductsList = () => {
             </Form.Group>
           </Card.Body>
         </Card>
-        <Card className="mx-1">
-          <Card.Body>
-            <div className="d-flex justify-content-center align-items-center pb-4 mb-4 w-100 border-bottom border-3 border-primary">
-              <Plus className="col-3"></Plus>
+        <Card className="mx-2">
+          <Card.Body className="px-1">
+            <div className="d-flex justify-content-center align-items-center pb-4 mb-4 border-bottom border-3 border-primary">
+              <Plus className="col-4"></Plus>
               <p
-                className=" col-9 nav-link mb-0"
+                className=" col-8 nav-link mb-0"
                 onClick={handleShowAddProductModal}
               >
                 Aggiungi Prodotto
@@ -124,23 +124,22 @@ const ProductsList = () => {
             <Table striped bordered hover responsive size="sm">
               <thead>
                 <tr>
-                  <th>#</th>
-                  <th>Nome</th>
-                  <th>Unità</th>
-                  <th>Fornitore</th>
+                  <th className="text-center">#</th>
+                  <th className="text-center">Nome</th>
+                  <th className="text-center">Unità</th>
+                  <th className="text-center">Fornitore</th>
                 </tr>
               </thead>
               <tbody>
                 {filteredProducts.length > 0 ? (
                   filteredProducts.map((product, index) => (
                     <tr key={product.id}>
-                      <td className="text-center align-middle">{index + 1}</td>
-                      <td>
-                        <div className="border-bottom pb-1">{product.name}</div>
-                        <div className="d-flex justify-content-around mt-1">
+                      <td className="text-center align-middle">
+                        <div className="border-bottom pb-1">{index + 1}</div>
+                        <div className="d-flex justify-content-around align-items-center mt-1">
                           <div>
                             <Pencil
-                              className="text-warning"
+                              className="text-warning me-2"
                               onClick={() => {
                                 handleShowEditModal(product);
                               }}
@@ -155,6 +154,9 @@ const ProductsList = () => {
                             ></Trash>
                           </div>
                         </div>
+                      </td>
+                      <td>
+                        <div className="">{product.name}</div>
                       </td>
                       <td className="text-center align-middle">
                         {product.unitOfMeasure}

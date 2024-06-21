@@ -26,7 +26,12 @@ const AddProductModal = ({ show, onHide }) => {
     fetchSuppliers();
   }, []);
 
-  const handleAddProduct = async () => {
+  const handleAddProduct = async (event) => {
+    event.preventDefault();
+    if (!productName || !unitOfMeasure || !supplierId) {
+      alert("Per favore, compila tutti i campi obbligatori.");
+      return;
+    }
     try {
       // Aggiungi il prodotto al database
       const productRef = await db.collection("prodotti").add({
@@ -63,7 +68,7 @@ const AddProductModal = ({ show, onHide }) => {
         <Modal.Title>Aggiungi Prodotto</Modal.Title>
       </Modal.Header>
       <Modal.Body>
-        <Form>
+        <Form onSubmit={handleAddProduct}>
           <Form.Group controlId="productName">
             <Form.Label>Nome Prodotto</Form.Label>
             <Form.Control
@@ -83,18 +88,18 @@ const AddProductModal = ({ show, onHide }) => {
               required
             >
               <option value="">Seleziona l'unità di misura</option>
-              <option value="Bottiglia">Bottiglia</option>
-              <option value="Cartone">Cartone</option>
-              <option value="Confezione">Confezione</option>
-              <option value="Pezzo">Pezzo</option>
-              <option value="Fusto">Fusto</option>
-              <option value="Flacone">Flacone</option>
-              <option value="Cassa">Cassa</option>
-              <option value="Tanica">Tanica</option>
-              <option value="Rotolo">Rotolo</option>
-              <option value="Kilogrammo">Kilogrammo</option>
-              <option value="Grammo">Grammo</option>
-              <option value="Litro">Litro</option>
+              <option value="BT">Bottiglia</option>
+              <option value="CT">Cartone</option>
+              <option value="CF">Confezione</option>
+              <option value="PZ">Pezzo</option>
+              <option value="FS">Fusto</option>
+              <option value="FL">Flacone</option>
+              <option value="CS">Cassa</option>
+              <option value="TN">Tanica</option>
+              <option value="RT">Rotolo</option>
+              <option value="KG">Kilogrammo</option>
+              <option value="GR">Grammo</option>
+              <option value="LT">Litro</option>
             </Form.Control>
           </Form.Group>
           <Form.Group controlId="supplierId">
@@ -113,16 +118,16 @@ const AddProductModal = ({ show, onHide }) => {
               ))}
             </Form.Control>
           </Form.Group>
+          <Modal.Footer>
+            <Button variant="primary" type="submit">
+              Aggiungi Prodotto
+            </Button>
+            <Button variant="secondary" onClick={onHide}>
+              Chiudi
+            </Button>
+          </Modal.Footer>
         </Form>
       </Modal.Body>
-      <Modal.Footer>
-        <Button variant="secondary" onClick={onHide}>
-          Chiudi
-        </Button>
-        <Button variant="primary" onClick={handleAddProduct}>
-          Aggiungi Prodotto
-        </Button>
-      </Modal.Footer>
     </Modal>
   );
 };

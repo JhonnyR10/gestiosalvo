@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { useLocation, useNavigate, useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import { Card, Table, Button } from "react-bootstrap";
 import Navbar from "./Navbar";
 import { db } from "../firebaseConfig";
@@ -36,20 +36,20 @@ const OrderSummary = () => {
     const currentDate = new Date().toLocaleDateString("it-IT");
 
     // Mappa delle abbreviazioni per le unità di misura
-    const unitAbbreviations = {
-      Bottiglia: "BT",
-      Cartone: "CR",
-      Confezione: "CF",
-      Pezzo: "PZ",
-      Fusto: "FS",
-      Flacone: "FL",
-      Cassa: "CS",
-      Tanica: "TN",
-      Rotolo: "RL",
-      Kilogrammo: "KG",
-      Grammo: "GR",
-      Litro: "LT",
-    };
+    // const unitAbbreviations = {
+    //   Bottiglia: "BT",
+    //   Cartone: "CR",
+    //   Confezione: "CF",
+    //   Pezzo: "PZ",
+    //   Fusto: "FS",
+    //   Flacone: "FL",
+    //   Cassa: "CS",
+    //   Tanica: "TN",
+    //   Rotolo: "RL",
+    //   Kilogrammo: "KG",
+    //   Grammo: "GR",
+    //   Litro: "LT",
+    // };
 
     // Costruisci il testo del messaggio dell'ordine
     const orderMessage =
@@ -57,9 +57,7 @@ const OrderSummary = () => {
       orderData.products
         .map(
           (product) =>
-            `- ${product.quantity} ${
-              unitAbbreviations[product.unitOfMeasure] || product.unitOfMeasure
-            } ${product.name} `
+            `- ${product.quantity} ${product.unitOfMeasure} ${product.name} `
         )
         .join("\n\n");
 
