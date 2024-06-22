@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { db } from "../firebaseConfig";
 import { Card } from "react-bootstrap";
-import { Eye, Pencil, Plus, Trash } from "react-bootstrap-icons";
+import { CardList, Eye, Pencil, Plus, Trash } from "react-bootstrap-icons";
 import { NavLink, useNavigate } from "react-router-dom";
 import ModalDeleteSupp from "./ModalDeleteSupp";
 import ModalEditSupp from "./ModalEditSupp";
@@ -59,9 +59,12 @@ const SupplierList = () => {
           <Card.Body className="p-0 py-4">
             <div className="d-flex flex-column justify-content-center align-items-center">
               <div className="border-bottom border-3 border-primary w-100 mb-4">
-                <Card.Title className="mb-4 fs-3 text-center">
-                  Elenco fornitori
-                </Card.Title>
+                <div className="mb-3 d-flex justify-content-center align-items-center">
+                  <CardList></CardList>
+                  <Card.Title className="fs-3 mb-0 text-center ms-2">
+                    Elenco fornitori
+                  </Card.Title>
+                </div>
                 <div className="d-flex justify-content-center align-items-center pb-4">
                   <Plus className="col-2"></Plus>
                   <NavLink to={"/addSupp"} className="col-6 nav-link ">

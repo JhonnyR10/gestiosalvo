@@ -38,8 +38,11 @@ const Navbar = () => {
                 id="offcanvasDarkNavbar"
                 aria-labelledby="offcanvasDarkNavbarLabel"
               >
-                <div className="offcanvas-header">
-                  <h5 className="offcanvas-title" id="offcanvasDarkNavbarLabel">
+                <div className="offcanvas-header text-center">
+                  <h5
+                    className="offcanvas-title fs-1"
+                    id="offcanvasDarkNavbarLabel"
+                  >
                     GestioSalvo
                   </h5>
                   <button

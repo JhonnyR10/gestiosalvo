@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
-import { Button, Modal, Form } from "react-bootstrap";
+import { Button, Modal, Form, ModalHeader } from "react-bootstrap";
 import { db } from "../firebaseConfig";
+import { CardList, Plus } from "react-bootstrap-icons";
 
 const AddProductModal = ({ show, onHide }) => {
   const [productName, setProductName] = useState("");
@@ -64,8 +65,13 @@ const AddProductModal = ({ show, onHide }) => {
 
   return (
     <Modal show={show} onHide={onHide} centered>
-      <Modal.Header closeButton>
-        <Modal.Title>Aggiungi Prodotto</Modal.Title>
+      {/* <Modal.Header closeButton></Modal.Header> */}
+      <Modal.Header
+        closeButton
+        className="d-flex justify-content-center align-items-center pb-4 w-100 border-bottom border-3 border-primary"
+      >
+        <Plus className="col-3"></Plus>
+        <Modal.Title className=" col-9 fs-3 m-0">Aggiungi prodotto</Modal.Title>
       </Modal.Header>
       <Modal.Body>
         <Form onSubmit={handleAddProduct}>
