@@ -113,9 +113,7 @@ const SupplierProfile = () => {
                 <div className="border-bottom border-3 border-dark w-100 mb-4">
                   <div className="d-flex justify-content-center align-items-center pb-4">
                     <Phone className="col-2"></Phone>
-                    <Card.Title className="col-6 m-0">
-                      {supplier.phoneNumber}
-                    </Card.Title>
+                    <p className="col-6 m-0 ">{supplier.phoneNumber}</p>
                     {/* <p>Telefono: {supplier.phoneNumber}</p> */}
                     <p className=" col-4 mb-0">
                       Prodotti:{" "}
@@ -123,16 +121,7 @@ const SupplierProfile = () => {
                     </p>
                   </div>
                   <div className="d-flex justify-content-center align-items-center">
-                    <div className="col-6 border-end py-2">
-                      <div
-                        className="d-flex justify-content-center align-items-center "
-                        onClick={() => handleShowDelete(supplier)}
-                      >
-                        <Trash className="col-4 text-danger"></Trash>
-                        <p className="m-0 col-8 text-danger">Elimina</p>
-                      </div>
-                    </div>
-                    <div className="col-6 py-2">
+                    <div className="col-6 border-end  py-2">
                       <div
                         className="d-flex justify-content-center align-items-center "
                         onClick={() => handleShowEdit(supplier)}
@@ -141,14 +130,23 @@ const SupplierProfile = () => {
                         <p className="m-0 col-8 text-warning">Modifica</p>
                       </div>
                     </div>
+                    <div className="col-6 py-2">
+                      <div
+                        className="d-flex justify-content-center align-items-center "
+                        onClick={() => handleShowDelete(supplier)}
+                      >
+                        <Trash className="col-4 text-danger"></Trash>
+                        <p className="m-0 col-8 text-danger">Elimina</p>
+                      </div>
+                    </div>
                   </div>
                 </div>
               </div>
             </div>
           </Card.Body>
         </Card>
-        <Card className="mx-2">
-          <Card.Body className="p-0 py-4">
+        <Card className="cardProdotti">
+          <Card.Body className="px-2 py-4">
             <div className="d-flex flex-column justify-content-center align-items-center">
               <div className="d-flex row justify-content-center align-items-center pb-4 mb-4 w-100 border-bottom border-3 border-primary">
                 <div className="col-12 d-flex justify-content-center align-items-center mb-3">
@@ -173,14 +171,14 @@ const SupplierProfile = () => {
                 />
               </div>
               {supplier.products && supplier.products.length > 0 ? (
-                <Table striped bordered hover responsive size="sm">
+                <Table striped bordered hover>
                   <thead>
                     <tr>
                       <th>#</th>
                       <th>Nome</th>
-                      <th>Unità</th>
-                      <th>Edit</th>
-                      <th>Elimina</th>
+                      <th className="text-center">Unità</th>
+                      <th className="text-center">Edit</th>
+                      <th className="text-center">Elimina</th>
                     </tr>
                   </thead>
                   <tbody>
@@ -188,15 +186,15 @@ const SupplierProfile = () => {
                       <tr key={index}>
                         <td>{index + 1}</td>
                         <td>{product.name}</td>
-                        <td>{product.unitOfMeasure}</td>
-                        <td className="text-center">
+                        <td className="text-center">{product.unitOfMeasure}</td>
+                        <td className="text-center text-warning">
                           <Pencil
                             onClick={() => {
                               handleShowEditModal(product);
                             }}
                           ></Pencil>
                         </td>
-                        <td className="text-center">
+                        <td className="text-center text-danger">
                           <Trash
                             onClick={() => {
                               handleShowDeleteModal(product);

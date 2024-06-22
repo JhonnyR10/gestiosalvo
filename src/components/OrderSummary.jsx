@@ -106,8 +106,8 @@ const OrderSummary = () => {
       <Navbar></Navbar>
       {orderData ? (
         <div className="d-flex flex-column align-items-center justify-content-center mt-5">
-          <Card className="mx-1">
-            <Card.Body>
+          <Card className=" cardProdotti">
+            <Card.Body className="px-2">
               <h3>Riepilogo Ordine per {orderData.supplierName}</h3>
               <p>Id ordine: {orderId}</p>
               <p>Stato: {orderData.isDraft ? "Bozza" : "Inviato"}</p>
@@ -123,23 +123,34 @@ const OrderSummary = () => {
                 <tbody>
                   {orderData.products.map((product, index) => (
                     <tr key={index}>
-                      <td>{index + 1}</td>
+                      <td className="align-middle text-center">{index + 1}</td>
                       <td>{product.name}</td>
-                      <td>{product.quantity}</td>
-                      <td>{product.unitOfMeasure}</td>
+                      <td className="align-middle text-center">
+                        {product.quantity}
+                      </td>
+                      <td className="align-middle text-center">
+                        {product.unitOfMeasure}
+                      </td>
                     </tr>
                   ))}
                 </tbody>
               </Table>
-              <Button onClick={handleSendOrder}>
-                Invia Ordine su WhatsApp
-              </Button>
-              <Button
-                variant="secondary"
-                onClick={() => handleEditDraft(orderData)}
-              >
-                Modifica Ordine
-              </Button>
+              <div className="d-flex justify-content-end">
+                <Button
+                  className="me-2"
+                  variant="warning"
+                  onClick={() => handleEditDraft(orderData)}
+                >
+                  Modifica Ordine
+                </Button>
+                <Button
+                  onClick={handleSendOrder}
+                  variant="success"
+                  className=""
+                >
+                  Invia su WhatsApp
+                </Button>
+              </div>
             </Card.Body>
           </Card>
         </div>

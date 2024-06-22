@@ -60,7 +60,7 @@ const Navbar = () => {
                       Home
                     </li>
 
-                    <li className="nav-item dropdown">
+                    <li className="nav-item dropdown show">
                       <a
                         className="nav-link dropdown-toggle"
                         href="a"
@@ -70,50 +70,50 @@ const Navbar = () => {
                       >
                         Menu
                       </a>
-                      <ul className="dropdown-menu dropdown-menu-dark">
-                        <li className="dropdown-item ">
-                          Ordini
-                          <ul>
-                            <li
-                              data-bs-dismiss="offcanvas"
-                              aria-label="Close"
-                              onClick={handleNavigate("/home")}
-                            >
-                              Tutti gli ordini
-                            </li>
-                            <li
-                              data-bs-dismiss="offcanvas"
-                              aria-label="Close"
-                              onClick={handleNavigate("/home")}
-                            >
-                              Nuovo ordine
-                            </li>
-                          </ul>
-                        </li>
+                      <ul className="dropdown-menu dropdown-menu-dark show">
                         <li className="dropdown-item">
                           Fornitori
                           <ul>
                             <li
                               data-bs-dismiss="offcanvas"
                               aria-label="Close"
-                              onClick={handleNavigate("/home")}
+                              onClick={handleNavigate("/listSupp")}
                             >
                               Tutti i fornitori
+                            </li>
+                          </ul>
+                        </li>
+
+                        <li className="dropdown-item">
+                          Prodotti
+                          <ul>
+                            <li
+                              data-bs-dismiss="offcanvas"
+                              aria-label="Close"
+                              onClick={handleNavigate("/listProd")}
+                            >
+                              Tutti i prodotti
+                            </li>
+                          </ul>
+                        </li>
+                        <li className="dropdown-item ">
+                          Ordini
+                          <ul>
+                            <li
+                              data-bs-dismiss="offcanvas"
+                              aria-label="Close"
+                              onClick={handleNavigate("/listOrd")}
+                            >
+                              Tutti gli ordini
                             </li>
                             <li
                               data-bs-dismiss="offcanvas"
                               aria-label="Close"
-                              onClick={handleNavigate("/home")}
+                              onClick={handleNavigate("/addOrd")}
                             >
-                              Nuovo Fornitore
+                              Aggiungi ordine
                             </li>
                           </ul>
-                        </li>
-                        <li></li>
-                        <li>
-                          <a className="dropdown-item" href="a">
-                            Prodotti
-                          </a>
                         </li>
                       </ul>
                     </li>

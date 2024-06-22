@@ -77,7 +77,7 @@ const SupplierList = () => {
                       className="border-bottom border-3 border-dark w-100 mb-4"
                       key={index}
                     >
-                      <div className="d-flex justify-content-center align-items-center pb-4">
+                      <div className="d-flex justify-content-center align-items-center pb-2">
                         <Eye className="col-2"></Eye>
                         <Card.Title
                           className="col-6 m-0"

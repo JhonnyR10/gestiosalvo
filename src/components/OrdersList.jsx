@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { db } from "../firebaseConfig";
 import { Table, Card, Form } from "react-bootstrap";
-import { Eye, Pencil, Trash } from "react-bootstrap-icons";
+import { CardList, Eye, Pencil, Trash } from "react-bootstrap-icons";
 import { useNavigate } from "react-router";
 import Navbar from "./Navbar";
 import DeleteOrderModal from "./DeleteOrderModal";
@@ -102,8 +102,11 @@ const OrdersList = () => {
       <div className="d-flex flex-column align-items-center justify-content-center mt-5 w-100">
         <Card className="mx-1">
           <Card.Body>
-            <Card.Title>Elenco Ordini</Card.Title>
-            <Form.Group controlId="formSupplierFilter">
+            <div className="d-flex justify-content-center align-items-center pb-4 mb-4 w-100 border-bottom border-3 border-primary">
+              <CardList className="col-4"></CardList>
+              <Card.Title className=" col-8 fs-3 m-0">Elenco Ordini</Card.Title>
+            </div>
+            <Form.Group controlId="formSupplierFilter" className="mb-3">
               <Form.Label>Filtra per Fornitore</Form.Label>
               <Form.Control
                 as="select"
@@ -118,7 +121,7 @@ const OrdersList = () => {
                 ))}
               </Form.Control>
             </Form.Group>
-            <Form.Group controlId="formDraftsFilter">
+            <Form.Group className="mb-3" controlId="formDraftsFilter">
               <Form.Check
                 type="checkbox"
                 label="Mostra bozze"
@@ -129,10 +132,10 @@ const OrdersList = () => {
             <Table striped bordered hover responsive size="sm">
               <thead>
                 <tr>
-                  <th>Stato</th>
-                  <th>Data</th>
-                  <th>Fornitore</th>
-                  <th>N. Prodotti</th>
+                  <th className="align-middle">Stato</th>
+                  <th className="align-middle">Data</th>
+                  <th className="align-middle">Fornitore</th>
+                  <th className="align-middle">N. Prodotti</th>
                 </tr>
               </thead>
               <tbody>
@@ -144,6 +147,7 @@ const OrdersList = () => {
                           <div className="border-bottom">Bozza</div>
                           <div className="d-flex justify-content-around align-items-center mt-1">
                             <Pencil
+                              className="text-warning"
                               onClick={() => handleEditDraft(order)}
                             ></Pencil>
 
@@ -176,8 +180,12 @@ const OrdersList = () => {
                       )}
                     </td>
                     <td>{order.createdAt.toDate().toLocaleString()}</td>
-                    <td>{order.supplierName}</td>
-                    <td>{order.products.length}</td>
+                    <td className="align-middle text-center">
+                      {order.supplierName}
+                    </td>
+                    <td className="align-middle text-center">
+                      {order.products.length}
+                    </td>
                   </tr>
                 ))}
               </tbody>

@@ -88,7 +88,7 @@ const ProductsList = () => {
     <>
       <Navbar />
       <div className="d-flex flex-column align-items-center justify-content-center mt-5 w-100">
-        <Card className="login-card mb-4 w-75">
+        <Card className="login-card mb-4">
           <Card.Body>
             <div className="d-flex justify-content-center align-items-center pb-4 mb-4 w-100 border-bottom border-3 border-primary">
               <Truck className="col-4"></Truck>
@@ -109,7 +109,7 @@ const ProductsList = () => {
                 ))}
               </Form.Control>
             </Form.Group>
-            <Form.Group controlId="formSearch">
+            <Form.Group controlId="formSearch" className="mt-2">
               <Form.Label>Cerca per Nome</Form.Label>
               <Form.Control
                 type="text"
@@ -120,8 +120,8 @@ const ProductsList = () => {
             </Form.Group>
           </Card.Body>
         </Card>
-        <Card className="mx-2">
-          <Card.Body className="px-1">
+        <Card className=" cardProdotti">
+          <Card.Body className="px-2">
             <div className="d-flex justify-content-center align-items-center pb-4 mb-4 border-bottom border-3 border-primary">
               <Plus className="col-4"></Plus>
               <p
@@ -148,30 +148,30 @@ const ProductsList = () => {
                 {filteredProducts.length > 0 ? (
                   filteredProducts.map((product, index) => (
                     <tr key={product.id}>
-                      <td className="text-center align-middle">
-                        <div className="border-bottom pb-1">{index + 1}</div>
-                        <div className="d-flex justify-content-around align-items-center mt-1">
-                          <div>
-                            <Pencil
-                              className="text-warning me-2"
-                              onClick={() => {
-                                handleShowEditModal(product);
-                              }}
-                            ></Pencil>
-                          </div>
-                          <div>
-                            <Trash
-                              className="text-danger"
-                              onClick={() => {
-                                handleShowDeleteModal(product);
-                              }}
-                            ></Trash>
+                      <td className="align-middle">
+                        <div className="text-center d-flex justify-content-around align-items-center ">
+                          <div className="border-end pe-2">{index + 1}</div>
+                          <div className="d-flex flex-column justify-content-around align-items-center">
+                            <div>
+                              <Pencil
+                                className="text-warning "
+                                onClick={() => {
+                                  handleShowEditModal(product);
+                                }}
+                              ></Pencil>
+                            </div>
+                            <div>
+                              <Trash
+                                className="text-danger"
+                                onClick={() => {
+                                  handleShowDeleteModal(product);
+                                }}
+                              ></Trash>
+                            </div>
                           </div>
                         </div>
                       </td>
-                      <td>
-                        <div className="">{product.name}</div>
-                      </td>
+                      <td className="align-middle">{product.name}</td>
                       <td className="text-center align-middle">
                         {product.unitOfMeasure}
                       </td>

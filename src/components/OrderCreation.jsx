@@ -4,6 +4,7 @@ import { Form, Button, Card, Table, Modal } from "react-bootstrap";
 import { useBlocker, useLocation, useNavigate } from "react-router-dom";
 
 import Navbar from "./Navbar";
+import { CardList } from "react-bootstrap-icons";
 
 const OrderCreation = () => {
   const [showModal, setShowModal] = useState(false);
@@ -17,6 +18,7 @@ const OrderCreation = () => {
   const [isSaving, setIsSaving] = useState(false);
   const [unsavedChanges, setUnsavedChanges] = useState(false);
   const [showSelectedOnly, setShowSelectedOnly] = useState(false);
+  const [searchTerm, setSearchTerm] = useState("");
 
   const blocker = useBlocker(
     ({ currentLocation, nextLocation }) =>
@@ -182,13 +184,24 @@ const OrderCreation = () => {
     blocker.reset();
     // Esegui azioni per annullare la chiusura
   };
+  const filteredProducts = products.filter(
+    (product) =>
+      product.name.toLowerCase().includes(searchTerm.toLowerCase()) &&
+      (showSelectedOnly ? orderItems[product.id]?.quantity > 0 : true)
+  );
 
   return (
     <>
       <Navbar />
       <div className="d-flex flex-column align-items-center justify-content-center mt-5">
-        <Card className="login-card mb-4 w-75">
+        <Card className="login-card mb-4">
           <Card.Body>
+            <div className="d-flex justify-content-center align-items-center pb-4 mb-4 w-100 border-bottom border-3 border-primary">
+              <CardList className="col-3"></CardList>
+              <Card.Title className=" col-9 fs-3 m-0">
+                Aggiungi Ordine
+              </Card.Title>
+            </div>
             <Form.Group controlId="formSupplierSelect">
               <Form.Label>Seleziona Fornitore</Form.Label>
               <Form.Control
@@ -205,7 +218,19 @@ const OrderCreation = () => {
                 ))}
               </Form.Control>
             </Form.Group>
+            {selectedSupplier && (
+              <Form.Group className="mt-2" controlId="formProductSearch">
+                <Form.Label>Ricerca Prodotto</Form.Label>
+                <Form.Control
+                  type="text"
+                  placeholder="Cerca per nome"
+                  value={searchTerm}
+                  onChange={(e) => setSearchTerm(e.target.value)}
+                />
+              </Form.Group>
+            )}
             <Form.Check
+              className="mt-3 formCheckordini"
               type="checkbox"
               label="Visualizza solo i prodotti selezionati"
               checked={showSelectedOnly}
@@ -214,8 +239,8 @@ const OrderCreation = () => {
           </Card.Body>
         </Card>
         {selectedSupplier && (
-          <Card className="mx-1">
-            <Card.Body>
+          <Card className="cardProdotti">
+            <Card.Body className="px-2">
               <Table striped bordered hover responsive size="sm">
                 <thead>
                   <tr>
@@ -226,18 +251,16 @@ const OrderCreation = () => {
                   </tr>
                 </thead>
                 <tbody>
-                  {products
-                    .filter((product) =>
-                      showSelectedOnly
-                        ? orderItems[product.id]?.quantity > 0
-                        : true
-                    )
-                    .map((product, index) => (
+                  {filteredProducts.length > 0 ? (
+                    filteredProducts.map((product, index) => (
                       <tr key={product.id}>
-                        <td>{index + 1}</td>
-                        <td>{product.name}</td>
+                        <td className="align-middle text-center">
+                          {index + 1}
+                        </td>
+                        <td className="">{product.name}</td>
                         <td className="align-middle">
                           <Form.Control
+                            className="text-center small-column "
                             size="sm"
                             type="number"
                             min="0"
@@ -251,8 +274,9 @@ const OrderCreation = () => {
                             }
                           />
                         </td>
-                        <td className="align-middle">
+                        <td className="align-middle ">
                           <Form.Control
+                            className=" text-center truncated-text "
                             as="select"
                             value={orderItems[product.id]?.unitOfMeasure || ""}
                             onChange={(e) =>
@@ -264,28 +288,43 @@ const OrderCreation = () => {
                             }
                           >
                             <option value="">{product.unitOfMeasure}</option>
-                            <option value="Bottiglia">Bottiglia</option>
-                            <option value="Cartone">Cartone</option>
-                            <option value="Confezione">Confezione</option>
-                            <option value="Pezzo">Pezzo</option>
-                            <option value="Fusto">Fusto</option>
-                            <option value="Flacone">Flacone</option>
-                            <option value="Cassa">Cassa</option>
-                            <option value="Tanica">Tanica</option>
-                            <option value="Rotolo">Rotolo</option>
-                            <option value="Kilogrammo">Kilogrammo</option>
-                            <option value="Grammo">Grammo</option>
-                            <option value="Litro">Litro</option>
+                            <option value="BT">Bottiglia</option>
+                            <option value="CT">Cartone</option>
+                            <option value="CF">Confezione</option>
+                            <option value="PZ">Pezzo</option>
+                            <option value="FS">Fusto</option>
+                            <option value="FL">Flacone</option>
+                            <option value="CS">Cassa</option>
+                            <option value="TN">Tanica</option>
+                            <option value="RT">Rotolo</option>
+                            <option value="KG">Kilogrammo</option>
+                            <option value="GR">Grammo</option>
+                            <option value="LT">Litro</option>
                           </Form.Control>
                         </td>
                       </tr>
-                    ))}
+                    ))
+                  ) : (
+                    <tr>
+                      <td colSpan="4" className="text-center">
+                        Nessun prodotto trovato.
+                      </td>
+                    </tr>
+                  )}
                 </tbody>
               </Table>
-              <Button onClick={handleCreateOrder}>Crea Ordine</Button>
-              <Button onClick={handleSaveAsDraft} className="ml-2">
-                Salva come Bozza
-              </Button>
+              <div className="d-flex justify-content-end">
+                <Button
+                  onClick={handleSaveAsDraft}
+                  variant="secondary"
+                  className="me-2"
+                >
+                  Salva come Bozza
+                </Button>
+                <Button variant="success" onClick={handleCreateOrder}>
+                  Crea Ordine
+                </Button>
+              </div>
             </Card.Body>
           </Card>
         )}

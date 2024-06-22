@@ -7,12 +7,33 @@ body {
   background-repeat: repeat;
 }
 .login-card {
-  width: 310px;
+  width: 80%;
+  min-width: 200px;
+  max-width: 500px;
+  margin: 0 auto;
 }
 
 .card-container {
   height: 100vh;
 }
 .small-column {
-  width: 80px; /* Regola questa larghezza secondo le tue necessità */
+  width: 70px; /* Regola questa larghezza secondo le tue necessità */
+}
+
+.cardProdotti {
+  width: 96%;
+  min-width: 300px;
+  max-width: 600px;
+  margin: 0 auto;
+}
+
+.formCheckordini {
+  font-size: 13px;
+}
+
+.truncated-text {
+  white-space: nowrap; /* Impedisce al testo di andare a capo */
+  overflow: hidden; /* Nasconde il testo che eccede i limiti del contenitore */
+  text-overflow: ellipsis; /* Aggiunge "..." alla fine del testo troncato */
+  max-width: 100%; /* Limita la larghezza del contenitore per il testo */
 }
