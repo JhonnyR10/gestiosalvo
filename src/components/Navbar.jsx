@@ -19,7 +19,7 @@ const Navbar = () => {
                   navigate("/home");
                 }}
               ></House>
-              <a className="navbar-brand" href="a">
+              <a className="navbar-brand ms-2 me-0" href="a">
                 GestioSalvo
               </a>
               <button
