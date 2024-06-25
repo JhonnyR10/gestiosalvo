@@ -65,62 +65,66 @@ const SupplierList = () => {
                     Elenco fornitori
                   </Card.Title>
                 </div>
-                <div className="d-flex justify-content-center align-items-center pb-4">
-                  <Plus className="col-2"></Plus>
-                  <NavLink to={"/addSupp"} className="col-6 nav-link ">
-                    Aggiungi fornitore
-                  </NavLink>
-                  <p className=" col-4 mb-0">Totale: {suppliers.length}</p>
-                </div>
               </div>
-              {suppliers.length > 0 ? (
-                <div className="d-flex flex-column justify-content-center align-items-center w-100">
-                  {suppliers.map((supplier, index) => (
-                    <div
-                      className="border-bottom border-3 border-dark w-100 mb-4"
-                      key={index}
-                    >
-                      <div className="d-flex justify-content-center align-items-center pb-2">
-                        <Eye className="col-2"></Eye>
-                        <Card.Title
-                          className="col-6 m-0"
-                          onClick={() => navigate(`/listSupp/${supplier.id}`)}
+              <div className="d-flex justify-content-center align-items-center pb-3 w-100">
+                <Plus className="col-2"></Plus>
+                <NavLink to={"/addSupp"} className="col-6 nav-link ">
+                  Aggiungi fornitore
+                </NavLink>
+                <p className=" col-4 mb-0">Totale: {suppliers.length}</p>
+              </div>
+            </div>
+          </Card.Body>
+        </Card>
+        <Card className=" cardProdotti">
+          <Card.Body className="px-2">
+            {suppliers.length > 0 ? (
+              <div className="d-flex flex-column justify-content-center align-items-center w-100">
+                {suppliers.map((supplier, index) => (
+                  <div
+                    className="border-bottom border-3 border-dark w-100 mb-4"
+                    key={index}
+                  >
+                    <div className="d-flex justify-content-center align-items-center pb-2">
+                      <Eye className="col-2"></Eye>
+                      <Card.Title
+                        className="col-6 m-0"
+                        onClick={() => navigate(`/listSupp/${supplier.id}`)}
+                      >
+                        {supplier.name}
+                      </Card.Title>
+                      {/* <p>Telefono: {supplier.phoneNumber}</p> */}
+                      <p className=" col-4 mb-0">
+                        Prodotti:{" "}
+                        {supplier.products ? supplier.products.length : 0}
+                      </p>
+                    </div>
+                    <div className="d-flex justify-content-center align-items-center">
+                      <div className="col-6 border-end py-2">
+                        <div
+                          className="d-flex justify-content-center align-items-center "
+                          onClick={() => handleShowDelete(supplier)}
                         >
-                          {supplier.name}
-                        </Card.Title>
-                        {/* <p>Telefono: {supplier.phoneNumber}</p> */}
-                        <p className=" col-4 mb-0">
-                          Prodotti:{" "}
-                          {supplier.products ? supplier.products.length : 0}
-                        </p>
-                      </div>
-                      <div className="d-flex justify-content-center align-items-center">
-                        <div className="col-6 border-end py-2">
-                          <div
-                            className="d-flex justify-content-center align-items-center "
-                            onClick={() => handleShowDelete(supplier)}
-                          >
-                            <Trash className="col-4 text-danger"></Trash>
-                            <p className="m-0 col-8 text-danger">Elimina</p>
-                          </div>
+                          <Trash className="col-4 text-danger"></Trash>
+                          <p className="m-0 col-8 text-danger">Elimina</p>
                         </div>
-                        <div className="col-6 py-2">
-                          <div
-                            className="d-flex justify-content-center align-items-center "
-                            onClick={() => handleShowEdit(supplier)}
-                          >
-                            <Pencil className="col-4 text-warning"></Pencil>
-                            <p className="m-0 col-8 text-warning">Modifica</p>
-                          </div>
+                      </div>
+                      <div className="col-6 py-2">
+                        <div
+                          className="d-flex justify-content-center align-items-center "
+                          onClick={() => handleShowEdit(supplier)}
+                        >
+                          <Pencil className="col-4 text-warning"></Pencil>
+                          <p className="m-0 col-8 text-warning">Modifica</p>
                         </div>
                       </div>
                     </div>
-                  ))}
-                </div>
-              ) : (
-                <p>Nessun fornitore trovato.</p>
-              )}
-            </div>
+                  </div>
+                ))}
+              </div>
+            ) : (
+              <p>Nessun fornitore trovato.</p>
+            )}
           </Card.Body>
         </Card>
         {selectedSupplier && (

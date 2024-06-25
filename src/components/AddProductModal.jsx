@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
-import { Button, Modal, Form, ModalHeader } from "react-bootstrap";
+import { Button, Modal, Form } from "react-bootstrap";
 import { db } from "../firebaseConfig";
-import { CardList, Plus } from "react-bootstrap-icons";
+import { Plus } from "react-bootstrap-icons";
 
 const AddProductModal = ({ show, onHide }) => {
   const [productName, setProductName] = useState("");
