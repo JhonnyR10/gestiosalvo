@@ -4,6 +4,7 @@ import { NavLink } from "react-router-dom";
 import AddProductModal from "./AddProductModal";
 import { useState } from "react";
 import Navbar from "./Navbar";
+import logo from "../logoGestioSalvo2.png";
 
 const Home = () => {
   const [showAddProductModal, setShowAddProductModal] = useState(false);
@@ -13,7 +14,8 @@ const Home = () => {
   return (
     <>
       <Navbar />
-      <div className=" d-flex flex-column align-items-center justify-content-center  mt-5">
+      <div className=" d-flex flex-column align-items-center justify-content-center  mt-1">
+        <img className="logo" src={logo} alt="logo"></img>
         <Card className="login-card mb-4">
           <Card.Body className="p-0 py-4">
             <div className="d-flex flex-column justify-content-center align-items-center">

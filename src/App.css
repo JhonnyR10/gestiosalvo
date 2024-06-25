@@ -37,3 +37,9 @@ body {
   text-overflow: ellipsis; /* Aggiunge "..." alla fine del testo troncato */
   max-width: 100%; /* Limita la larghezza del contenitore per il testo */
 }
+
+.logo {
+  width: 30%;
+
+  margin: 0 auto;
+}

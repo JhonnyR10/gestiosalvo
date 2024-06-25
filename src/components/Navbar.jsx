@@ -10,7 +10,7 @@ const Navbar = () => {
   return (
     <>
       {location.pathname !== "/" ? (
-        <div className="mb-5">
+        <div className="mb-1">
           <nav className="navbar navbar-dark bg-dark ">
             <div className="container-fluid">
               <House
@@ -83,6 +83,13 @@ const Navbar = () => {
                               onClick={handleNavigate("/listSupp")}
                             >
                               Tutti i fornitori
+                            </li>
+                            <li
+                              data-bs-dismiss="offcanvas"
+                              aria-label="Close"
+                              onClick={handleNavigate("/addSupp")}
+                            >
+                              Aggiungi fornitore
                             </li>
                           </ul>
                         </li>
