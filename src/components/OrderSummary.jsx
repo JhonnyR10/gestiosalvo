@@ -114,10 +114,12 @@ const OrderSummary = () => {
               <Table striped bordered hover size="sm">
                 <thead>
                   <tr>
-                    <th>#</th>
-                    <th>Nome</th>
-                    <th>Quantità</th>
-                    <th>Unità di Misura</th>
+                    <th className="text-center align-middle">#</th>
+                    <th className="align-middle">Nome</th>
+                    <th className="text-center align-middle">Quantità</th>
+                    <th className="text-center align-middle">
+                      Unità di Misura
+                    </th>
                   </tr>
                 </thead>
                 <tbody>

@@ -18,7 +18,7 @@ const Home = () => {
         <img className="logo" src={logo} alt="logo"></img>
         <Card className="login-card mb-4">
           <Card.Body className="p-0 py-4">
-            <div className="d-flex flex-column justify-content-center align-items-center">
+            <div className="d-flex flex-column justify-content-center align-items-center mb-3">
               <div className="border-bottom border-3 border-primary w-100 mb-4">
                 <Card.Title className="mb-4 fs-3 text-center">
                   Fornitori
