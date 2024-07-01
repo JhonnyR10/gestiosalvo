@@ -9,6 +9,7 @@ import AddProductModal from "./AddProductModal";
 import EditProductModal from "./EditProductModal";
 import DeleteProductModal from "./DeleteProductModal";
 import Navbar from "./Navbar";
+import BackToTopButton from "./BackToTopButton";
 
 const SupplierProfile = () => {
   const { id } = useParams();
@@ -245,6 +246,7 @@ const SupplierProfile = () => {
           </>
         )}
       </div>
+      <BackToTopButton />
     </>
   ) : null;
 };

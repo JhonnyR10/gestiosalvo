@@ -6,6 +6,7 @@ import { NavLink, useNavigate } from "react-router-dom";
 import ModalDeleteSupp from "./ModalDeleteSupp";
 import ModalEditSupp from "./ModalEditSupp";
 import Navbar from "./Navbar";
+import BackToTopButton from "./BackToTopButton";
 
 const SupplierList = () => {
   const navigate = useNavigate();
@@ -144,6 +145,7 @@ const SupplierList = () => {
           </>
         )}
       </div>
+      <BackToTopButton />
     </>
   );
 };

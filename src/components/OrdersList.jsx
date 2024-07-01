@@ -5,9 +5,11 @@ import { CardList, Eye, Pencil, Trash } from "react-bootstrap-icons";
 import { useNavigate } from "react-router";
 import Navbar from "./Navbar";
 import DeleteOrderModal from "./DeleteOrderModal";
+import BackToTopButton from "./BackToTopButton";
 
 const OrdersList = () => {
   const [orders, setOrders] = useState([]);
+  // eslint-disable-next-line no-unused-vars
   const [filteredOrders, setFilteredOrders] = useState([]);
   const [suppliers, setSuppliers] = useState([]);
   const [selectedSupplier, setSelectedSupplier] = useState("");
@@ -202,6 +204,7 @@ const OrdersList = () => {
           </>
         )}
       </div>
+      <BackToTopButton />
     </>
   );
 };

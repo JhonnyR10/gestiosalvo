@@ -3,6 +3,7 @@ import { useNavigate, useParams } from "react-router-dom";
 import { Card, Table, Button } from "react-bootstrap";
 import Navbar from "./Navbar";
 import { db } from "../firebaseConfig";
+import BackToTopButton from "./BackToTopButton";
 
 const OrderSummary = () => {
   const navigate = useNavigate();
@@ -157,6 +158,7 @@ const OrderSummary = () => {
           </Card>
         </div>
       ) : null}
+      <BackToTopButton />
     </>
   );
 };

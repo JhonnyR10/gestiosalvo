@@ -3,7 +3,6 @@ import { Button, Modal, Form, Spinner } from "react-bootstrap";
 import { db } from "../firebaseConfig";
 import { Plus } from "react-bootstrap-icons";
 import * as XLSX from "xlsx";
-import firebase from "firebase/compat/app";
 
 const AddProductModal = ({ show, onHide }) => {
   const [productName, setProductName] = useState("");
@@ -266,12 +265,15 @@ const AddProductModal = ({ show, onHide }) => {
       <Modal.Body>
         {isLoading ? (
           <div
-            className="d-flex justify-content-center align-items-center"
+            className="d-flex flex-column justify-content-center align-items-center"
             style={{ height: "200px" }}
           >
-            <Spinner animation="border" role="status">
-              <span className="sr-only">Salvando i prodotti...</span>
-            </Spinner>
+            <Spinner
+              animation="border"
+              role="status"
+              variant="primary"
+            ></Spinner>
+            <div className="sr-only">Salvando i prodotti...</div>
           </div>
         ) : (
           <Form onSubmit={handleAddProduct}>
@@ -328,9 +330,6 @@ const AddProductModal = ({ show, onHide }) => {
               <Button variant="primary" type="submit">
                 Aggiungi Prodotto
               </Button>
-              <Button variant="secondary" onClick={onHide}>
-                Chiudi
-              </Button>
             </Modal.Footer>
             <hr />
             <h5>Carica Prodotti da Excel</h5>
@@ -355,11 +354,11 @@ const AddProductModal = ({ show, onHide }) => {
               <Form.Control type="file" onChange={handleFileUpload} />
             </Form.Group>
             <Modal.Footer className="border-0">
-              <Button variant="primary" onClick={handleSaveExcelData}>
-                Salva Prodotti da Excel
-              </Button>
               <Button variant="secondary" onClick={onHide}>
                 Chiudi
+              </Button>
+              <Button variant="primary" onClick={handleSaveExcelData}>
+                Salva Prodotti da Excel
               </Button>
             </Modal.Footer>
           </Form>

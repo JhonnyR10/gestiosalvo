@@ -2,11 +2,12 @@ import React, { useEffect, useState } from "react";
 import { db } from "../firebaseConfig";
 import { Form, Button, Card, Table, Modal } from "react-bootstrap";
 import { useBlocker, useLocation, useNavigate } from "react-router-dom";
-
+import BackToTopButton from "./BackToTopButton";
 import Navbar from "./Navbar";
 import { CardList } from "react-bootstrap-icons";
 
 const OrderCreation = () => {
+  // eslint-disable-next-line no-unused-vars
   const [showModal, setShowModal] = useState(false);
   const [suppliers, setSuppliers] = useState([]);
   const [selectedSupplier, setSelectedSupplier] = useState("");
@@ -15,6 +16,7 @@ const OrderCreation = () => {
   const [currentOrderId, setCurrentOrderId] = useState(null);
   const navigate = useNavigate();
   const location = useLocation();
+  // eslint-disable-next-line no-unused-vars
   const [isSaving, setIsSaving] = useState(false);
   const [unsavedChanges, setUnsavedChanges] = useState(false);
   const [showSelectedOnly, setShowSelectedOnly] = useState(false);
@@ -350,6 +352,7 @@ const OrderCreation = () => {
           </Modal.Footer>
         </Modal>
       </div>
+      <BackToTopButton />
     </>
   );
 };

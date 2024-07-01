@@ -1,6 +1,5 @@
 import { Button, Modal } from "react-bootstrap";
 import { db } from "../firebaseConfig";
-import { useLocation, useNavigate } from "react-router";
 
 const DeleteOrderModal = ({ show, onHide, orderId }) => {
   const handleDelete = async () => {

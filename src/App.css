@@ -40,6 +40,20 @@ body {
 
 .logo {
   width: 30%;
-
   margin: 0 auto;
+}
+
+/* BackToTopButton.css */
+.back-to-top {
+  position: fixed;
+  bottom: 20px;
+  right: 20px;
+  cursor: pointer;
+  z-index: 1000;
+  opacity: 0.7;
+  transition: opacity 0.3s;
+}
+
+.back-to-top:hover {
+  opacity: 1;
 }

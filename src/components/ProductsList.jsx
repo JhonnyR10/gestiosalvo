@@ -6,6 +6,7 @@ import AddProductModal from "./AddProductModal";
 import EditProductModal from "./EditProductModal";
 import DeleteProductModal from "./DeleteProductModal";
 import Navbar from "./Navbar";
+import BackToTopButton from "./BackToTopButton";
 
 const ProductsList = () => {
   const [products, setProducts] = useState([]);
@@ -212,6 +213,7 @@ const ProductsList = () => {
           </>
         )}
       </div>
+      <BackToTopButton />
     </>
   );
 };
