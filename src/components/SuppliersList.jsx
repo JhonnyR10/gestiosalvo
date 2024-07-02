@@ -1,12 +1,13 @@
 import React, { useEffect, useState } from "react";
 import { db } from "../firebaseConfig";
-import { Card } from "react-bootstrap";
+import { Card, CardBody } from "react-bootstrap";
 import { CardList, Eye, Pencil, Plus, Trash } from "react-bootstrap-icons";
 import { NavLink, useNavigate } from "react-router-dom";
 import ModalDeleteSupp from "./ModalDeleteSupp";
 import ModalEditSupp from "./ModalEditSupp";
 import Navbar from "./Navbar";
 import BackToTopButton from "./BackToTopButton";
+import SupplierPhoneNumber from "./SupplierPhoneNumber";
 
 const SupplierList = () => {
   const navigate = useNavigate();
@@ -77,7 +78,53 @@ const SupplierList = () => {
             </div>
           </Card.Body>
         </Card>
-        <Card className=" cardProdotti">
+        {suppliers.length > 0 ? (
+          <div className="container text-center">
+            <div className="row row-cols-1 g-2">
+              {suppliers.map((supplier, index) => (
+                <Card key={index} className="col">
+                  <CardBody className="">
+                    <div className="d-flex justify-content-between align-items-center pb-2">
+                      <Card.Title
+                        className=" m-0"
+                        onClick={() => navigate(`/listSupp/${supplier.id}`)}
+                      >
+                        {supplier.name}
+                      </Card.Title>
+                      <Eye
+                        className=""
+                        onClick={() => navigate(`/listSupp/${supplier.id}`)}
+                      ></Eye>
+                    </div>
+                    <div className="d-flex justify-content-between align-items-center pb-2">
+                      <p className="mb-0">
+                        Prodotti:{" "}
+                        {supplier.products ? supplier.products.length : 0}
+                      </p>
+                      <Pencil
+                        className="text-warning"
+                        onClick={() => handleShowEdit(supplier)}
+                      ></Pencil>
+                    </div>
+                    <div className="d-flex justify-content-between align-items-center pb-2">
+                      {/* <p className="mb-0">
+                        Cell: {supplier.phoneNumber ? supplier.phoneNumber : 0}
+                      </p> */}
+                      <SupplierPhoneNumber phoneNumber={supplier.phoneNumber} />
+                      <Trash
+                        className="text-danger"
+                        onClick={() => handleShowDelete(supplier)}
+                      ></Trash>
+                    </div>
+                  </CardBody>
+                </Card>
+              ))}
+            </div>
+          </div>
+        ) : (
+          <p>Nessun fornitore trovato.</p>
+        )}
+        {/* <Card className=" cardProdotti">
           <Card.Body className="px-2">
             {suppliers.length > 0 ? (
               <div className="d-flex flex-column justify-content-center align-items-center w-100">
@@ -94,7 +141,7 @@ const SupplierList = () => {
                       >
                         {supplier.name}
                       </Card.Title>
-                      {/* <p>Telefono: {supplier.phoneNumber}</p> */}
+
                       <p className=" col-4 mb-0">
                         Prodotti:{" "}
                         {supplier.products ? supplier.products.length : 0}
@@ -127,7 +174,7 @@ const SupplierList = () => {
               <p>Nessun fornitore trovato.</p>
             )}
           </Card.Body>
-        </Card>
+        </Card> */}
         {selectedSupplier && (
           <>
             <ModalDeleteSupp

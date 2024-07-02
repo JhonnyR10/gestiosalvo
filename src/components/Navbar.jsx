@@ -19,9 +19,7 @@ const Navbar = () => {
                   navigate("/home");
                 }}
               ></House>
-              <a className="navbar-brand ms-2 me-0" href="a">
-                GestioSalvo
-              </a>
+              <span className="navbar-brand ms-2 me-0">GestioSalvo</span>
               <button
                 className="navbar-toggler"
                 type="button"
