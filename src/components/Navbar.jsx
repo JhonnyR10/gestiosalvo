@@ -1,5 +1,6 @@
 import { House } from "react-bootstrap-icons";
 import { useLocation, useNavigate } from "react-router-dom";
+import Logout from "./Logout";
 
 const Navbar = () => {
   const location = useLocation();
@@ -59,6 +60,14 @@ const Navbar = () => {
                       onClick={handleNavigate("/home")}
                     >
                       Home
+                    </li>
+                    <li
+                      className="nav-item"
+                      data-bs-dismiss="offcanvas"
+                      aria-label="Close"
+                      onClick={handleNavigate("/home")}
+                    >
+                      <Logout></Logout>
                     </li>
 
                     <li className="nav-item dropdown show">

@@ -57,3 +57,76 @@ body {
 .back-to-top:hover {
   opacity: 1;
 }
+
+/** login card **/
+
+/* --------------------CSS CARD REGISTER/LOGIN------------------- */
+.bg-section {
+  background-color: rgb(255, 255, 255);
+  padding: 1rem;
+  border-radius: 8px;
+  color: black;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+.logo-login {
+  width: 40%;
+}
+.btn-primary.btnLR {
+  --bs-btn-border-color: none;
+}
+
+.btn:hover.btnLR {
+  background-color: unset;
+}
+
+.card-container1 {
+  width: 80%;
+  min-width: 200px;
+  max-width: 500px;
+  margin: 0 auto;
+  perspective: 1000px;
+  margin-top: 2rem;
+}
+
+.cardLR {
+  width: 100%;
+  height: 100%;
+  transform-style: preserve-3d;
+  transition: transform 0.6s;
+}
+
+.card-inner {
+  width: 100%;
+  height: 100%;
+  transform-style: preserve-3d;
+  transition: transform 0.6s;
+}
+
+.card-face,
+.card-back {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  backface-visibility: hidden;
+  /* display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  text-align: center; */
+}
+
+.card-front {
+  color: white;
+  background-color: rgba(255, 255, 255, 0);
+}
+
+.card-back {
+  transform: rotateY(180deg);
+  color: white;
+  background-color: rgba(255, 255, 255, 0);
+}
+.card-container1.clicked .cardLR {
+  transform: rotateY(180deg);
+}
+
+/* --------------------CSS CARD REGISTER/LOGIN------------------- */
