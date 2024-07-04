@@ -57,6 +57,7 @@ export const AuthProvider = ({ children }) => {
       await sendEmailVerification(user);
     } catch (error) {
       console.error("Error signing up: ", error);
+      throw error;
     }
   };
 

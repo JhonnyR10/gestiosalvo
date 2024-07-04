@@ -29,7 +29,7 @@ const GoogleSignIn = () => {
   };
 
   return (
-    <GoogleOAuthProvider clientId="89197350735-t75noe6403gjhf00rikj5ftq3jhblvoh.apps.googleusercontent.com">
+    <GoogleOAuthProvider clientId={process.env.REACT_APP_GOOGLE_CLIENT_ID}>
       <GoogleLogin onSuccess={handleLoginSuccess} onError={handleLoginError} />
     </GoogleOAuthProvider>
   );
