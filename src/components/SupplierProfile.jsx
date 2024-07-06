@@ -10,6 +10,7 @@ import EditProductModal from "./EditProductModal";
 import DeleteProductModal from "./DeleteProductModal";
 import Navbar from "./Navbar";
 import BackToTopButton from "./BackToTopButton";
+import { doc, getDoc } from "firebase/firestore";
 
 const SupplierProfile = () => {
   const { id } = useParams();
@@ -71,9 +72,10 @@ const SupplierProfile = () => {
   useEffect(() => {
     const fetchSupplier = async () => {
       try {
-        const doc = await db.collection("fornitori").doc(id).get();
-        if (doc.exists) {
-          setSupplier(doc.data());
+        const supplierRef = doc(db, "fornitori", id);
+        const supplierDoc = await getDoc(supplierRef);
+        if (supplierDoc.exists()) {
+          setSupplier(supplierDoc.data());
         } else {
           console.log("No such document!");
         }

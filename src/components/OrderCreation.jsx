@@ -5,6 +5,14 @@ import { useBlocker, useLocation, useNavigate } from "react-router-dom";
 import BackToTopButton from "./BackToTopButton";
 import Navbar from "./Navbar";
 import { CardList } from "react-bootstrap-icons";
+import {
+  addDoc,
+  collection,
+  doc,
+  getDoc,
+  getDocs,
+  updateDoc,
+} from "firebase/firestore";
 
 const OrderCreation = () => {
   // eslint-disable-next-line no-unused-vars
@@ -30,7 +38,7 @@ const OrderCreation = () => {
   useEffect(() => {
     const fetchSuppliers = async () => {
       try {
-        const suppliersSnapshot = await db.collection("fornitori").get();
+        const suppliersSnapshot = await getDocs(collection(db, "fornitori"));
         const suppliersList = suppliersSnapshot.docs.map((doc) => ({
           id: doc.id,
           ...doc.data(),
@@ -48,10 +56,9 @@ const OrderCreation = () => {
     if (selectedSupplier) {
       const fetchProducts = async () => {
         try {
-          const supplierDoc = await db
-            .collection("fornitori")
-            .doc(selectedSupplier)
-            .get();
+          const supplierDoc = await getDoc(
+            doc(db, "fornitori", selectedSupplier)
+          );
           if (supplierDoc.exists) {
             setProducts(supplierDoc.data().products || []);
           }
@@ -96,10 +103,7 @@ const OrderCreation = () => {
   const saveOrder = async (isDraft, isSending) => {
     setIsSaving(true);
     try {
-      const supplierDoc = await db
-        .collection("fornitori")
-        .doc(selectedSupplier)
-        .get();
+      const supplierDoc = await getDoc(doc(db, "fornitori", selectedSupplier));
       if (supplierDoc.exists) {
         const supplierData = supplierDoc.data();
         const selectedProducts = products.filter(
@@ -126,7 +130,7 @@ const OrderCreation = () => {
         if (currentOrderId) {
           console.log("sono nel update", currentOrderId);
           // Update the existing order
-          await db.collection("ordini").doc(currentOrderId).update(orderData);
+          await updateDoc(doc(db, "ordini", currentOrderId), orderData);
           if (isSending) {
             navigate(`/order-summary/${currentOrderId}`);
           } else {
@@ -136,7 +140,7 @@ const OrderCreation = () => {
         } else {
           console.log("sono nella creazione", currentOrderId);
           // Create a new order
-          const docRef = await db.collection("ordini").add(orderData);
+          const docRef = await addDoc(collection(db, "ordini"), orderData);
           const orderId = docRef.id;
 
           if (isSending) {

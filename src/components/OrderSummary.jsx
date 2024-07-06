@@ -4,6 +4,7 @@ import { Card, Table, Button } from "react-bootstrap";
 import Navbar from "./Navbar";
 import { db } from "../firebaseConfig";
 import BackToTopButton from "./BackToTopButton";
+import { doc, getDoc, updateDoc } from "firebase/firestore";
 
 const OrderSummary = () => {
   const navigate = useNavigate();
@@ -16,7 +17,8 @@ const OrderSummary = () => {
   useEffect(() => {
     const fetchOrder = async () => {
       try {
-        const orderDoc = await db.collection("ordini").doc(orderId).get();
+        const orderRef = doc(db, "ordini", orderId);
+        const orderDoc = await getDoc(orderRef);
         if (orderDoc.exists) {
           setOrderData(orderDoc.data());
         } else {
@@ -71,11 +73,10 @@ const OrderSummary = () => {
     window.open(whatsappUrl, "_blank");
 
     if (orderId) {
-      db.collection("ordini")
-        .doc(orderId)
-        .update({
-          isDraft: false,
-        })
+      const orderRef = doc(db, "ordini", orderId);
+      updateDoc(orderRef, {
+        isDraft: false,
+      })
         .then(() => {
           setOrderData({ ...orderData, isDraft: false });
         })

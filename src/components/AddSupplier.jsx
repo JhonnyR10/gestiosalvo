@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import { db } from "../firebaseConfig"; // Importa l'istanza di Firestore
 import { Alert, Button, Card, CardBody, Form } from "react-bootstrap";
 import Navbar from "./Navbar";
+import { addDoc, collection } from "firebase/firestore";
 
 const AddSupplier = () => {
   const [supplierName, setSupplierName] = useState("");
@@ -10,7 +11,7 @@ const AddSupplier = () => {
 
   const handleAddSupplier = async () => {
     try {
-      await db.collection("fornitori").add({
+      await addDoc(collection(db, "fornitori"), {
         name: supplierName,
         phoneNumber: phoneNumber,
         products: [], // Inizialmente nessun prodotto associato

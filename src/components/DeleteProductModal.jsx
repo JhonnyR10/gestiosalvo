@@ -1,15 +1,16 @@
 import React from "react";
 import { Button, Modal } from "react-bootstrap";
 import { db } from "../firebaseConfig";
+import { deleteDoc, doc, getDoc, updateDoc } from "firebase/firestore";
 
 const DeleteProductModal = ({ show, onHide, productId, supplierId }) => {
   const handleDelete = async () => {
     try {
       // Aggiorna la lista dei prodotti del fornitore
-      const supplierRef = db.collection("fornitori").doc(supplierId);
-      const supplierDoc = await supplierRef.get();
+      const supplierRef = doc(db, "fornitori", supplierId);
+      const supplierDoc = await getDoc(supplierRef);
       //   Elimina il prodotto dal database
-      await db.collection("prodotti").doc(productId).delete();
+      await deleteDoc(doc(db, "prodotti", productId));
       console.log(`Prodotto con ID ${productId} eliminato dal database.`);
 
       if (supplierDoc.exists) {
@@ -23,7 +24,7 @@ const DeleteProductModal = ({ show, onHide, productId, supplierId }) => {
         console.log("Prodotti aggiornati del fornitore:", updatedProducts);
 
         // Aggiorna il documento del fornitore con l'array dei prodotti aggiornato
-        await supplierRef.update({ products: updatedProducts });
+        await updateDoc(supplierRef, { products: updatedProducts });
         console.log(
           `Lista dei prodotti del fornitore con ID ${supplierId} aggiornata.`
         );

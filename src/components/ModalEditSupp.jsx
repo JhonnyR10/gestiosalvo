@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { db } from "../firebaseConfig";
 import { Button, Form, Modal } from "react-bootstrap";
+import { doc, updateDoc } from "firebase/firestore";
 
 const ModalEditSupp = ({ id, show, onHide, supp }) => {
   const [supplier, setSupplier] = useState({
@@ -17,7 +18,8 @@ const ModalEditSupp = ({ id, show, onHide, supp }) => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      await db.collection("fornitori").doc(id).update(supplier);
+      const supplierRef = doc(db, "fornitori", id);
+      await updateDoc(supplierRef, supplier);
       onHide();
     } catch (error) {
       console.error("Errore durante la modifica del fornitore:", error);

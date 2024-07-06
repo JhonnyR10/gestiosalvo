@@ -1,10 +1,11 @@
 import { Button, Modal } from "react-bootstrap";
 import { db } from "../firebaseConfig";
+import { deleteDoc, doc } from "firebase/firestore";
 
 const DeleteOrderModal = ({ show, onHide, orderId }) => {
   const handleDelete = async () => {
     try {
-      await db.collection("ordini").doc(orderId).delete();
+      await deleteDoc(doc(db, "ordini", orderId));
       console.log(`Ordinecon ID ${orderId} eliminato dal database.`);
 
       onHide(); // Chiudi il modale dopo l'eliminazione

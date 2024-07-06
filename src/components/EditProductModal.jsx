@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import { Button, Modal, Form } from "react-bootstrap";
 import { db } from "../firebaseConfig";
+import { doc, getDoc, updateDoc } from "firebase/firestore";
 
 const EditProductModal = ({ show, onHide, product, supplierId }) => {
   const [productName, setProductName] = useState(product.name);
@@ -9,14 +10,15 @@ const EditProductModal = ({ show, onHide, product, supplierId }) => {
   const handleEdit = async () => {
     try {
       // Aggiorna il prodotto nel database
-      await db.collection("prodotti").doc(product.id).update({
+      const productRef = doc(db, "prodotti", product.id);
+      await updateDoc(productRef, {
         name: productName,
         unitOfMeasure,
       });
 
       // Aggiorna la lista dei prodotti del fornitore
-      const supplierRef = db.collection("fornitori").doc(supplierId);
-      const supplierDoc = await supplierRef.get();
+      const supplierRef = doc(db, "fornitori", supplierId);
+      const supplierDoc = await getDoc(supplierRef);
 
       if (supplierDoc.exists) {
         const supplierData = supplierDoc.data();
@@ -24,7 +26,7 @@ const EditProductModal = ({ show, onHide, product, supplierId }) => {
           p.id === product.id ? { ...p, name: productName, unitOfMeasure } : p
         );
 
-        await supplierRef.update({ products: updatedProducts });
+        await updateDoc(supplierRef, { products: updatedProducts });
       }
       console.log("Prodotto modificato correttamente!");
       onHide(); // Chiudi il modale dopo la modifica

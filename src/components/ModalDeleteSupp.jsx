@@ -1,6 +1,7 @@
 import { Button, Modal } from "react-bootstrap";
 import { db } from "../firebaseConfig";
 import { useLocation, useNavigate } from "react-router";
+import { deleteDoc, doc, getDoc } from "firebase/firestore";
 
 const ModalDeleteSupp = ({ id, show, onHide, suppName }) => {
   const location = useLocation();
@@ -8,8 +9,8 @@ const ModalDeleteSupp = ({ id, show, onHide, suppName }) => {
 
   const handleDelete = async () => {
     try {
-      const supplierRef = db.collection("fornitori").doc(id);
-      const supplierDoc = await supplierRef.get();
+      const supplierRef = doc(db, "fornitori", id);
+      const supplierDoc = await getDoc(supplierRef);
 
       if (supplierDoc.exists) {
         const supplierData = supplierDoc.data();
@@ -21,8 +22,8 @@ const ModalDeleteSupp = ({ id, show, onHide, suppName }) => {
         // Elimina ogni prodotto nella lista del fornitore
         const deleteProductPromises = products.map(async (product) => {
           try {
-            const productRef = db.collection("prodotti").doc(product.id);
-            await productRef.delete();
+            const productRef = doc(db, "prodotti", product.id);
+            await deleteDoc(productRef);
             console.log(`Prodotto ${product.id} eliminato con successo`);
           } catch (error) {
             console.error(
@@ -36,7 +37,7 @@ const ModalDeleteSupp = ({ id, show, onHide, suppName }) => {
         await Promise.all(deleteProductPromises);
 
         // Elimina il documento del fornitore
-        await supplierRef.delete();
+        await deleteDoc(supplierRef);
         console.log(`Fornitore ${id} eliminato con successo`);
 
         if (location.pathname.startsWith("/listSupp/")) {

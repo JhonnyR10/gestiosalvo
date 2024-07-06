@@ -6,6 +6,7 @@ import { useNavigate } from "react-router";
 import Navbar from "./Navbar";
 import DeleteOrderModal from "./DeleteOrderModal";
 import BackToTopButton from "./BackToTopButton";
+import { collection, getDocs, orderBy, query, where } from "firebase/firestore";
 
 const OrdersList = () => {
   const [orders, setOrders] = useState([]);
@@ -31,17 +32,23 @@ const OrdersList = () => {
   useEffect(() => {
     const fetchOrders = async () => {
       try {
-        let ordersQuery = db.collection("ordini").orderBy("createdAt", "desc");
+        let ordersQuery = query(
+          collection(db, "ordini"),
+          orderBy("createdAt", "desc")
+        );
 
         if (selectedSupplier) {
-          ordersQuery = ordersQuery.where("supplierId", "==", selectedSupplier);
+          ordersQuery = query(
+            ordersQuery,
+            where("supplierId", "==", selectedSupplier)
+          );
         }
 
         if (!showDrafts) {
-          ordersQuery = ordersQuery.where("isDraft", "==", false);
+          ordersQuery = query(ordersQuery, where("isDraft", "==", false));
         }
 
-        const ordersSnapshot = await ordersQuery.get();
+        const ordersSnapshot = await getDocs(ordersQuery);
         const ordersList = ordersSnapshot.docs.map((doc) => ({
           id: doc.id,
           ...doc.data(),
@@ -55,7 +62,7 @@ const OrdersList = () => {
 
     const fetchSuppliers = async () => {
       try {
-        const suppliersSnapshot = await db.collection("fornitori").get();
+        const suppliersSnapshot = await getDocs(collection(db, "fornitori"));
         const suppliersList = suppliersSnapshot.docs.map((doc) => ({
           id: doc.id,
           ...doc.data(),

@@ -1,272 +1,15 @@
-// import { useEffect, useState } from "react";
-// import { Card, Form, Button, Alert } from "react-bootstrap";
-// import { useNavigate } from "react-router-dom";
-// import { useDispatch, useSelector } from "react-redux";
-// import { setAccessToken } from "../redux/actions";
-
-// const LoginPage = () => {
-//   const [user, setUser] = useState(null);
-//   const [password, setPassword] = useState(null);
-//   const navigate = useNavigate();
-//   const dispatch = useDispatch();
-//   const [showAlert, setShowAlert] = useState(false);
-//   const accessToken = useSelector((state) => state.user.accessToken);
-
-//   const goToProfile = (e) => {
-//     e.preventDefault();
-//     dispatch(setAccessToken(user, password));
-//     if (!accessToken && user && password) {
-//       setShowAlert(true);
-//     }
-//   };
-
-//   useEffect(() => {
-//     if (accessToken) {
-//       navigate("/home");
-//     }
-//   }, [accessToken, navigate, user, password]);
-
-//   return (
-//     <div className="card-container d-flex justify-content-center align-items-center">
-//       <Card className="login-card ms-auto me-auto">
-//         <Card.Body>
-//           <div className="d-flex justify-content-center mb-3"></div>
-//           <Card.Title className="mb-4 fs-3">Accedi</Card.Title>
-//           <Form onSubmit={goToProfile}>
-//             <Form.Group className="mb-3">
-//               <Form.Label>Username</Form.Label>
-//               <Form.Control
-//                 type="text"
-//                 placeholder="Inserisci il tuo Username"
-//                 onChange={(e) => setUser(e.target.value)}
-//                 required
-//               />
-//             </Form.Group>
-
-//             <Form.Group className="mb-3">
-//               <Form.Label>Password</Form.Label>
-//               <Form.Control
-//                 type="password"
-//                 placeholder="Password"
-//                 onChange={(e) => setPassword(e.target.value)}
-//                 required
-//               />
-//               {showAlert && (
-//                 <Alert
-//                   className="mt-3"
-//                   variant="danger"
-//                   onClose={() => setShowAlert(false)}
-//                   dismissible
-//                 >
-//                   Password e/o Username errati
-//                 </Alert>
-//               )}
-//             </Form.Group>
-
-//             <Form.Group className="mb-3">
-//               <Form.Check type="checkbox" label="Ricordami" />
-//             </Form.Group>
-//             <div className="d-flex justify-content-center align-items-center">
-//               <Button
-//                 variant="primary"
-//                 type="submit"
-//                 className="custom-button py-2"
-//               >
-//                 Accedi
-//               </Button>
-//             </div>
-//           </Form>
-//           <Card.Link href="#" className="d-block mt-5">
-//             Password dimenticata?
-//           </Card.Link>
-//         </Card.Body>
-//       </Card>
-//     </div>
-//   );
-// };
-// export default LoginPage;
-
-// src/components/LoginPage.js
-// import React, { useState } from "react";
-// import { useDispatch } from "react-redux";
-// import { useNavigate } from "react-router-dom";
-// import { auth } from "../firebaseConfig";
-// import { setUser } from "../redux/actions";
-
-// const LoginPage = () => {
-//   const [email, setEmail] = useState("");
-//   const [password, setPassword] = useState("");
-//   const dispatch = useDispatch();
-//   const navigate = useNavigate();
-
-//   const handleLogin = async (e) => {
-//     e.preventDefault();
-//     try {
-//       const userCredential = await auth.signInWithEmailAndPassword(
-//         email,
-//         password
-//       );
-//       dispatch(setUser(userCredential.user));
-//       navigate("/home");
-//     } catch (error) {
-//       console.error("Error logging in: ", error);
-//     }
-//   };
-
-//   const handleSignUp = async (e) => {
-//     e.preventDefault();
-//     try {
-//       const userCredential = await auth.createUserWithEmailAndPassword(
-//         email,
-//         password
-//       );
-//       console.log("Utente registrato");
-//       dispatch(setUser(userCredential.user));
-//       navigate("/");
-//     } catch (error) {
-//       console.error("Error signing up: ", error);
-//     }
-//   };
-
-//   return (
-//     <div>
-//       <h2>Login</h2>
-//       <form>
-//         <input
-//           type="email"
-//           value={email}
-//           onChange={(e) => setEmail(e.target.value)}
-//           placeholder="Email"
-//         />
-//         <input
-//           type="password"
-//           value={password}
-//           onChange={(e) => setPassword(e.target.value)}
-//           placeholder="Password"
-//         />
-//         <button onClick={handleLogin}>Login</button>
-//         <button onClick={handleSignUp}>Sign Up</button>
-//       </form>
-//     </div>
-//   );
-// };
-
-// export default LoginPage;
-
-// src/components/LoginPage.js
-// src/components/LoginPage.js
-// import React, { useState } from "react";
-// import { useNavigate } from "react-router-dom";
-// import {
-//   getAuth,
-//   signInWithEmailAndPassword,
-//   createUserWithEmailAndPassword,
-//   sendEmailVerification,
-//   updateProfile,
-// } from "firebase/auth";
-
-// const LoginPage = () => {
-//   const [email, setEmail] = useState("");
-//   const [password, setPassword] = useState("");
-//   const [phone, setPhone] = useState("");
-//   const [photoURL, setPhotoURL] = useState("");
-//   const navigate = useNavigate();
-//   const auth = getAuth();
-
-//   const handleLogin = async (e) => {
-//     e.preventDefault();
-//     try {
-//       await signInWithEmailAndPassword(auth, email, password);
-//       navigate("/home");
-//     } catch (error) {
-//       console.error("Error logging in: ", error);
-//     }
-//   };
-
-//   const handleSignUp = async (e) => {
-//     e.preventDefault();
-//     try {
-//       const userCredential = await createUserWithEmailAndPassword(
-//         auth,
-//         email,
-//         password
-//       );
-//       const user = userCredential.user;
-
-//       await updateProfile(user, {
-//         phoneNumber: phone,
-//         photoURL: photoURL,
-//       });
-
-//       await sendEmailVerification(user);
-//       navigate("/home");
-//     } catch (error) {
-//       console.error("Error signing up: ", error);
-//     }
-//   };
-
-//   return (
-//     <div>
-//       <h2>Login</h2>
-//       <form>
-//         <input
-//           type="email"
-//           value={email}
-//           onChange={(e) => setEmail(e.target.value)}
-//           placeholder="Email"
-//         />
-//         <input
-//           type="password"
-//           value={password}
-//           onChange={(e) => setPassword(e.target.value)}
-//           placeholder="Password"
-//         />
-//         <button onClick={handleLogin}>Login</button>
-//       </form>
-
-//       <h2>Sign Up</h2>
-//       <form>
-//         <input
-//           type="email"
-//           value={email}
-//           onChange={(e) => setEmail(e.target.value)}
-//           placeholder="Email"
-//         />
-//         <input
-//           type="password"
-//           value={password}
-//           onChange={(e) => setPassword(e.target.value)}
-//           placeholder="Password"
-//         />
-//         <input
-//           type="text"
-//           value={phone}
-//           onChange={(e) => setPhone(e.target.value)}
-//           placeholder="Phone Number"
-//         />
-//         <input
-//           type="text"
-//           value={photoURL}
-//           onChange={(e) => setPhotoURL(e.target.value)}
-//           placeholder="Photo URL"
-//         />
-//         <button onClick={handleSignUp}>Sign Up</button>
-//       </form>
-//     </div>
-//   );
-// };
-
-// export default LoginPage;
-
-//--------------------------------------------
-
-import React, { useState } from "react";
-import { Alert, Button, Form } from "react-bootstrap";
+import React, { useState, useEffect } from "react";
+import { Alert, Button, Form, Spinner } from "react-bootstrap";
 import { useNavigate } from "react-router-dom";
-import { useAuth } from "../AuthProvider"; // Importa useAuth
+import { useAuth } from "../AuthProvider";
 import GoogleSignIn from "./GoogleSignIn";
 import { Envelope, Eye, EyeSlash, Key } from "react-bootstrap-icons";
 import ReactDOM from "react-dom";
+import {
+  fetchSignInMethodsForEmail,
+  getAuth,
+  sendPasswordResetEmail,
+} from "firebase/auth";
 
 const LoginPage = () => {
   const [email, setEmail] = useState("");
@@ -275,6 +18,29 @@ const LoginPage = () => {
   const { login } = useAuth();
   const [showAlert, setShowAlert] = useState(false);
   const [showPassword, setShowPassword] = useState(false);
+  const [error, setError] = useState("");
+  const [resetSuccess, setResetSuccess] = useState(false);
+  const [loading, setLoading] = useState(false);
+  const auth = getAuth();
+
+  useEffect(() => {
+    const loadReCAPTCHA = () => {
+      if (window.grecaptcha) {
+        window.grecaptcha.ready(() => {});
+      }
+    };
+
+    // Aggiungi lo script reCAPTCHA al documento
+    const script = document.createElement("script");
+    script.src = `https://www.google.com/recaptcha/api.js?render=${process.env.REACT_APP_RECAPTCHA_SITE_KEY}`;
+    script.async = true;
+    script.onload = loadReCAPTCHA;
+    document.body.appendChild(script);
+
+    return () => {
+      document.body.removeChild(script);
+    };
+  }, []);
 
   const handleLogin = async (e) => {
     e.preventDefault();
@@ -291,12 +57,64 @@ const LoginPage = () => {
     setShowPassword(!showPassword);
   };
 
+  const handleResetPassword = async () => {
+    if (!email) {
+      setError("Inserisci il tuo indirizzo email per reimpostare la password.");
+      setTimeout(() => setError(false), 3000);
+      return;
+    }
+    setLoading(true);
+    setResetSuccess(false);
+    setError("");
+    try {
+      if (!window.grecaptcha) {
+        setError("reCAPTCHA non è pronto. Riprova più tardi.");
+        setTimeout(() => setError(""), 3000);
+        setLoading(false);
+        return;
+      }
+
+      // eslint-disable-next-line no-unused-vars
+      const recaptchaToken = await window.grecaptcha.execute(
+        process.env.REACT_APP_RECAPTCHA_SITE_KEY,
+        { action: "reset_password" }
+      );
+      const signInMethods = await fetchSignInMethodsForEmail(auth, email);
+
+      if (signInMethods.length === 0) {
+        setError("Non esiste alcun account con questa email.");
+        setTimeout(() => setError(false), 3000);
+        setLoading(false);
+        return;
+      }
+      await sendPasswordResetEmail(auth, email);
+      setResetSuccess(true);
+      setTimeout(() => setResetSuccess(false), 3000);
+    } catch (error) {
+      if (error.code === "auth/user-not-found") {
+        setError("Non esiste alcun account con questa email.");
+        setTimeout(() => setError(false), 3000);
+      } else if (error.code === "auth/invalid-email") {
+        setError("Formato email non valido.");
+        setTimeout(() => setError(false), 3000);
+      } else {
+        setError(
+          "Errore durante l'invio dell'email di reimpostazione della password."
+        );
+        setTimeout(() => setError(false), 3000);
+      }
+      console.error("Error sending reset email: ", error);
+    } finally {
+      setLoading(false);
+    }
+  };
+
   return (
     <>
       <Form id="login-form" className="bg-section">
         <div className=" mb-4">
           <h3 className="mb-4">Login con:</h3>
-          <div className="mb-4">
+          <div className="mb-4 d-flex justify-content-center">
             <GoogleSignIn></GoogleSignIn>
           </div>
         </div>
@@ -308,7 +126,7 @@ const LoginPage = () => {
             <Envelope className="me-3"></Envelope> Email
           </Form.Label>
           <Form.Control
-            className="w-100 m-auto"
+            placeholder="Enter your email"
             required
             value={email}
             onChange={(e) => {
@@ -322,17 +140,27 @@ const LoginPage = () => {
           </Form.Label>
           <div className="password-wrapper">
             <Form.Control
+              required
               type={showPassword ? "text" : "password"}
               value={password}
               onChange={(e) => setPassword(e.target.value)}
               placeholder="Enter password"
             />
-            <div className="password-icon" onClick={toggleShowPassword}>
+            <div className="password-icon2" onClick={toggleShowPassword}>
               {showPassword ? <EyeSlash /> : <Eye />}
             </div>
           </div>
         </Form.Group>
-
+        <span onClick={handleResetPassword} style={{ fontSize: "0.7rem" }}>
+          Hai dimenticato la password?
+          {loading && (
+            <Spinner
+              animation="border"
+              size="sm"
+              style={{ marginLeft: "10px" }}
+            />
+          )}
+        </span>
         <div className="text-end mt-4">
           <Button className="rounded-3 px-3 w-100" onClick={handleLogin}>
             Login
@@ -353,6 +181,42 @@ const LoginPage = () => {
             }}
           >
             Email o Password errati! Riprova!
+          </Alert>,
+          document.getElementById("alert-root")
+        )}
+      {error &&
+        ReactDOM.createPortal(
+          <Alert
+            variant="danger"
+            onClose={() => setError("")}
+            dismissible
+            style={{
+              position: "fixed",
+              bottom: "40px",
+              right: "5px",
+              left: "5px",
+              zIndex: 1000,
+            }}
+          >
+            {error}
+          </Alert>,
+          document.getElementById("alert-root")
+        )}
+      {resetSuccess &&
+        ReactDOM.createPortal(
+          <Alert
+            variant="success"
+            onClose={() => setResetSuccess(false)}
+            dismissible
+            style={{
+              position: "fixed",
+              bottom: "40px",
+              right: "5px",
+              left: "5px",
+              zIndex: 1000,
+            }}
+          >
+            Email di reimpostazione della password inviata!
           </Alert>,
           document.getElementById("alert-root")
         )}

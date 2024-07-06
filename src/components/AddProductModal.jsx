@@ -3,6 +3,14 @@ import { Button, Modal, Form, Spinner } from "react-bootstrap";
 import { db } from "../firebaseConfig";
 import { Plus } from "react-bootstrap-icons";
 import * as XLSX from "xlsx";
+import {
+  addDoc,
+  collection,
+  doc,
+  getDoc,
+  getDocs,
+  updateDoc,
+} from "firebase/firestore";
 
 const AddProductModal = ({ show, onHide }) => {
   const [productName, setProductName] = useState("");
@@ -16,7 +24,7 @@ const AddProductModal = ({ show, onHide }) => {
     const fetchSuppliers = async () => {
       console.log("Fetching suppliers...");
       try {
-        const suppliersCollection = await db.collection("fornitori").get();
+        const suppliersCollection = await getDocs(collection(db, "fornitori"));
         const suppliersData = suppliersCollection.docs.map((doc) => ({
           id: doc.id,
           ...doc.data(),
@@ -30,116 +38,41 @@ const AddProductModal = ({ show, onHide }) => {
     fetchSuppliers();
   }, []);
 
-  // const handleAddProduct = async (event) => {
-  //   event.preventDefault();
-  //   if (!productName || !unitOfMeasure || !supplierId) {
-  //     alert("Per favore, compila tutti i campi obbligatori.");
-  //     return;
-  //   }
-  //   try {
-  //     // Aggiungi il prodotto al database
-  //     const productRef = await db.collection("prodotti").add({
-  //       name: productName,
-  //       unitOfMeasure,
-  //       supplierId,
-  //     });
-
-  //     // Aggiorna la lista dei prodotti del fornitore selezionato
-  //     const supplierRef = db.collection("fornitori").doc(supplierId);
-  //     const supplierDoc = await supplierRef.get();
-
-  //     if (supplierDoc.exists) {
-  //       const supplierData = supplierDoc.data();
-  //       const updatedProducts = [
-  //         ...supplierData.products,
-  //         { name: productName, unitOfMeasure, id: productRef.id },
-  //       ];
-
-  //       await supplierRef.update({ products: updatedProducts });
-  //     }
-  //     setProductName("");
-  //     setSupplierId("");
-  //     setUnitOfMeasure("");
-  //     onHide(); // Chiudi il modale dopo l'aggiunta
-  //   } catch (error) {
-  //     console.error("Errore durante l'aggiunta del prodotto:", error);
-  //   }
-  // };
-
-  // const handleFileUpload = (event) => {
-  //   const file = event.target.files[0];
-  //   const reader = new FileReader();
-
-  //   reader.onload = (e) => {
-  //     const arrayBuffer = e.target.result;
-  //     const workbook = XLSX.read(arrayBuffer, { type: "array" });
-  //     const sheetName = workbook.SheetNames[0];
-  //     const worksheet = workbook.Sheets[sheetName];
-  //     const jsonData = XLSX.utils.sheet_to_json(worksheet);
-  //     setExcelData(jsonData);
-  //   };
-
-  //   reader.readAsArrayBuffer(file);
-  // };
-
-  // const handleSaveExcelData = async () => {
-  //   if (!supplierId || excelData.length === 0) {
-  //     alert("Per favore, seleziona un fornitore e carica un file Excel.");
-  //     return;
-  //   }
-
-  //   const batch = db.batch();
-  //   const productsCollection = db.collection("prodotti");
-
-  //   excelData.forEach((item) => {
-  //     const productData = {
-  //       supplierId,
-  //       name: item.name,
-  //       unit: item.unit,
-  //       createdAt: firebase.firestore.FieldValue.serverTimestamp(),
-  //     };
-
-  //     const docRef = productsCollection.doc();
-  //     batch.set(docRef, productData);
-  //   });
-
-  //   await batch.commit();
-  //   alert("Products uploaded successfully!");
-  //   onHide();
-  // };
-
   const updateSupplierProducts = async (
     productRef,
     productName,
     unitOfMeasure,
     supplierId
   ) => {
-    const supplierRef = db.collection("fornitori").doc(supplierId);
-    const supplierDoc = await supplierRef.get();
+    const supplierRef = doc(db, "fornitori", supplierId);
+
+    const supplierDoc = await getDoc(supplierRef);
 
     if (supplierDoc.exists) {
       const supplierData = supplierDoc.data();
-      let updatedProducts = [];
+      let updatedProducts = supplierData.products || [];
 
       if (productRef) {
         // Aggiunta di un singolo prodotto
         updatedProducts = [
-          ...(supplierData.products || []),
-          { name: productName, unitOfMeasure, id: productRef.id },
+          ...updatedProducts,
+          { name: productName, unitOfMeasure, id: productRef },
         ];
       } else {
         // Aggiunta multipla di prodotti
         updatedProducts = [
-          ...(supplierData.products || []),
+          ...updatedProducts,
           ...productName.map((name, index) => ({
             name,
             unitOfMeasure: unitOfMeasure[index],
-            id: supplierId[index],
+            id: supplierId,
           })),
         ];
       }
 
-      await supplierRef.update({ products: updatedProducts });
+      await updateDoc(supplierRef, { products: updatedProducts });
+    } else {
+      console.error(`Il fornitore con ID ${supplierId} non esiste.`);
     }
   };
 
@@ -150,11 +83,14 @@ const AddProductModal = ({ show, onHide }) => {
       return;
     }
     try {
-      const productRef = await db.collection("prodotti").add({
+      const productData = {
         name: productName,
         unitOfMeasure,
         supplierId,
-      });
+      };
+
+      const docRef = await addDoc(collection(db, "prodotti"), productData);
+      const productRef = docRef.id; // Ottieni l'ID del documento appena creato
 
       await updateSupplierProducts(
         productRef,
@@ -229,7 +165,8 @@ const AddProductModal = ({ show, onHide }) => {
           name: item.name,
           unitOfMeasure: item.unitOfMeasure,
         };
-        const productRef = await db.collection("prodotti").add(productData);
+        const docRef = await addDoc(collection(db, "prodotti"), productData);
+        const productRef = docRef.id;
         await updateSupplierProducts(
           productRef,
           item.name,
@@ -250,6 +187,7 @@ const AddProductModal = ({ show, onHide }) => {
       onHide();
     }
   };
+
   return (
     <Modal show={show} onHide={onHide} centered>
       {/* <Modal.Header closeButton></Modal.Header> */}

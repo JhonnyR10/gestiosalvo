@@ -7,6 +7,7 @@ import EditProductModal from "./EditProductModal";
 import DeleteProductModal from "./DeleteProductModal";
 import Navbar from "./Navbar";
 import BackToTopButton from "./BackToTopButton";
+import { collection, getDocs } from "firebase/firestore";
 
 const ProductsList = () => {
   const [products, setProducts] = useState([]);
@@ -45,7 +46,7 @@ const ProductsList = () => {
   useEffect(() => {
     const fetchProducts = async () => {
       try {
-        const productsSnapshot = await db.collection("prodotti").get();
+        const productsSnapshot = await getDocs(collection(db, "prodotti"));
         const productsList = productsSnapshot.docs.map((doc) => ({
           id: doc.id,
           ...doc.data(),
@@ -58,17 +59,16 @@ const ProductsList = () => {
 
     const fetchSuppliers = async () => {
       try {
-        const suppliersSnapshot = await db.collection("fornitori").get();
-        const suppliersList = suppliersSnapshot.docs.map((doc) => ({
+        const suppliersCollection = await getDocs(collection(db, "fornitori"));
+        const suppliersData = suppliersCollection.docs.map((doc) => ({
           id: doc.id,
           ...doc.data(),
         }));
-        setSuppliers(suppliersList);
+        setSuppliers(suppliersData);
       } catch (error) {
         console.error("Errore durante il recupero dei fornitori:", error);
       }
     };
-
     fetchProducts();
     fetchSuppliers();
   }, [showAddProductModal, showDeleteModal, showEditModal]);
