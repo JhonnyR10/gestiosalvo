@@ -195,23 +195,24 @@ export const AuthProvider = ({ children }) => {
       try {
         await setPersistence(auth, browserLocalPersistence);
         console.log("Persistence set to local");
+
+        const unsubscribe = onAuthStateChanged(auth, (user) => {
+          console.log("AuthProvider: onAuthStateChanged triggered", user);
+          setCurrentUser(user);
+          setLoading(false);
+        });
+
+        return () => {
+          console.log("AuthProvider: Cleanup");
+          unsubscribe();
+        };
       } catch (error) {
         console.error("Error setting persistence: ", error);
+        setLoading(false); // Ensure loading state is updated even if there's an error
       }
     };
 
     configurePersistence();
-
-    const unsubscribe = onAuthStateChanged(auth, (user) => {
-      console.log("AuthProvider: onAuthStateChanged triggered", user);
-      setCurrentUser(user);
-      setLoading(false);
-    });
-
-    return () => {
-      console.log("AuthProvider: Cleanup");
-      unsubscribe();
-    };
   }, []);
 
   const login = async (email, password) => {
