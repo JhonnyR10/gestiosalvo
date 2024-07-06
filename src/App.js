@@ -149,7 +149,7 @@
 // export default App;
 
 import React from "react";
-import { Routes, Route } from "react-router-dom";
+import { Routes, Route, Navigate } from "react-router-dom";
 import Home from "./components/Home";
 import AddSupplier from "./components/AddSupplier";
 import SupplierList from "./components/SuppliersList";
@@ -162,26 +162,31 @@ import { useAuth } from "./AuthProvider";
 import RegisterLoginCard from "./components/RegisterLoginCard";
 
 const App = () => {
-  const { currentUser } = useAuth();
-  console.log("App: currentUser", currentUser);
+  const { currentUser, loading } = useAuth();
+
+  if (loading) {
+    return <div>Loading...</div>; // Gestisci lo stato di caricamento iniziale
+  }
 
   return (
     <Routes>
-      <Route path="/" element={<RegisterLoginCard />} />
-      {currentUser ? (
-        <>
-          <Route path="/home" element={<Home />} />
-          <Route path="/addSupp" element={<AddSupplier />} />
-          <Route path="/addOrd" element={<OrderCreation />} />
-          <Route path="/listSupp" element={<SupplierList />} />
-          <Route path="/listSupp/:id" element={<SupplierProfile />} />
-          <Route path="/listProd" element={<ProductsList />} />
-          <Route path="/order-summary/:orderId" element={<OrderSummary />} />
-          <Route path="/listOrd" element={<OrdersList />} />
-        </>
-      ) : (
-        <Route path="/" element={<RegisterLoginCard />} />
-      )}
+      {/* Rotta per la pagina di login se currentUser non esiste */}
+      <Route
+        path="/"
+        element={
+          currentUser ? <Navigate to="/home" replace /> : <RegisterLoginCard />
+        }
+      />
+
+      {/* Rotte protette */}
+      <Route path="/home" element={<Home />} />
+      <Route path="/addSupp" element={<AddSupplier />} />
+      <Route path="/addOrd" element={<OrderCreation />} />
+      <Route path="/listSupp" element={<SupplierList />} />
+      <Route path="/listSupp/:id" element={<SupplierProfile />} />
+      <Route path="/listProd" element={<ProductsList />} />
+      <Route path="/order-summary/:orderId" element={<OrderSummary />} />
+      <Route path="/listOrd" element={<OrdersList />} />
     </Routes>
   );
 };
