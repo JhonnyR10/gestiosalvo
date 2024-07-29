@@ -34,9 +34,10 @@ const AddProductModal = ({ show, onHide }) => {
         console.error("Errore durante il recupero dei fornitori:", error);
       }
     };
-
-    fetchSuppliers();
-  }, []);
+    if (show) {
+      fetchSuppliers();
+    }
+  }, [show]);
 
   const updateSupplierProducts = async (
     productRef,

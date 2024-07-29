@@ -1,4 +1,4 @@
-import { House } from "react-bootstrap-icons";
+import { CurrencyEuro, House } from "react-bootstrap-icons";
 import { useLocation, useNavigate } from "react-router-dom";
 import Logout from "./Logout";
 
@@ -14,12 +14,20 @@ const Navbar = () => {
         <div className="mb-1">
           <nav className="navbar navbar-dark bg-dark ">
             <div className="container-fluid">
-              <House
-                className="text-white fs-1 me-4"
-                onClick={() => {
-                  navigate("/home");
-                }}
-              ></House>
+              <div>
+                <House
+                  className="text-white fs-1 me-3 "
+                  onClick={() => {
+                    navigate("/home");
+                  }}
+                ></House>
+                <CurrencyEuro
+                  className="text-white fs-1"
+                  onClick={() => {
+                    navigate("/homeConti");
+                  }}
+                />
+              </div>
               <span className="navbar-brand ms-2 me-0">GestioSalvo</span>
               <button
                 className="navbar-toggler"

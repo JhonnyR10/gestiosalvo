@@ -160,12 +160,21 @@ import OrderSummary from "./components/OrderSummary";
 import OrdersList from "./components/OrdersList";
 import { useAuth } from "./AuthProvider";
 import RegisterLoginCard from "./components/RegisterLoginCard";
+import { Spinner } from "react-bootstrap";
+import HomeConti from "./components/HomeConti";
+import ClientsList from "./components/ClientsList";
+import MenuList from "./components/MenuList";
+import MenuDetail from "./components/MenuDetail";
 
 const App = () => {
   const { currentUser, loading } = useAuth();
 
   if (loading) {
-    return <div>Loading...</div>; // Gestisci lo stato di caricamento iniziale
+    return (
+      <div className="d-flex justify-content-center align-items-center">
+        <Spinner animation="grow" variant="primary" />
+      </div>
+    );
   }
 
   return (
@@ -178,15 +187,27 @@ const App = () => {
         }
       />
 
-      {/* Rotte protette */}
-      <Route path="/home" element={<Home />} />
-      <Route path="/addSupp" element={<AddSupplier />} />
-      <Route path="/addOrd" element={<OrderCreation />} />
-      <Route path="/listSupp" element={<SupplierList />} />
-      <Route path="/listSupp/:id" element={<SupplierProfile />} />
-      <Route path="/listProd" element={<ProductsList />} />
-      <Route path="/order-summary/:orderId" element={<OrderSummary />} />
-      <Route path="/listOrd" element={<OrdersList />} />
+      {currentUser ? (
+        <>
+          <Route path="/home" element={<Home />} />
+          <Route path="/addSupp" element={<AddSupplier />} />
+          <Route path="/addOrd" element={<OrderCreation />} />
+          <Route path="/listSupp" element={<SupplierList />} />
+          <Route path="/listSupp/:id" element={<SupplierProfile />} />
+          <Route path="/listProd" element={<ProductsList />} />
+          <Route path="/order-summary/:orderId" element={<OrderSummary />} />
+          <Route path="/listOrd" element={<OrdersList />} />
+          <Route path="/homeConti" element={<HomeConti />} />
+          <Route path="/clientsList" element={<ClientsList />} />
+          <Route path="/menuList" element={<MenuList />} />
+          <Route path="/menuList/:id" element={<MenuDetail />} />
+        </>
+      ) : (
+        <Route
+          path="/"
+          element={<RegisterLoginCard></RegisterLoginCard>}
+        ></Route>
+      )}
     </Routes>
   );
 };

@@ -196,3 +196,20 @@ body {
 .separator::after {
   margin-left: 10px;
 }
+
+/*-----------------------*/
+.unShow {
+  pointer-events: none;
+  opacity: 0.5;
+
+  filter: grayscale(100%);
+  cursor: not-allowed;
+}
+
+/*-----------------------*/
+.sizeCardconto {
+  font-size: 12px !important;
+}
+.fontWeightCard {
+  font-weight: 900 !important;
+}

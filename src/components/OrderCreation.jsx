@@ -319,7 +319,14 @@ const OrderCreation = () => {
                   )}
                 </tbody>
               </Table>
-              <div className="d-flex justify-content-end">
+              <div
+                className="d-flex justify-content-end py-2"
+                style={{
+                  position: "sticky",
+                  bottom: 0,
+                  backgroundColor: "white",
+                }}
+              >
                 <Button
                   onClick={handleSaveAsDraft}
                   variant="secondary"
@@ -356,7 +363,7 @@ const OrderCreation = () => {
           </Modal.Footer>
         </Modal>
       </div>
-      <BackToTopButton />
+      {/* <BackToTopButton /> */}
     </>
   );
 };
