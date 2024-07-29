@@ -337,7 +337,8 @@ const AddAccountModal = ({ show, onHide }) => {
   //     }
   //   };
 
-  const saveOrUpdateAccount = async () => {
+  const saveOrUpdateAccount = async (event) => {
+    event.preventDefault();
     setIsLoading(true);
     try {
       // Check if an account already exists for the client today
@@ -352,7 +353,7 @@ const AddAccountModal = ({ show, onHide }) => {
       // Prepare new product data
       const newProducts = Object.keys(orderItems).map((productId) => ({
         ...products.find((p) => p.id === productId),
-        quantity: orderItems[productId]?.quantity,
+        quantity: Number(orderItems[productId]?.quantity) || 0, // Ensure quantity is a number
       }));
 
       if (!existingAccountsSnapshot.empty) {
@@ -370,9 +371,12 @@ const AddAccountModal = ({ show, onHide }) => {
               (p) => p.id === existingProduct.id
             );
             if (newProduct) {
+              // Update the quantity if the product exists
+              const updatedQuantity =
+                (existingProduct.quantity || 0) + (newProduct.quantity || 0);
               acc.push({
                 ...existingProduct,
-                quantity: existingProduct.quantity + (newProduct.quantity || 0),
+                quantity: updatedQuantity,
               });
             } else {
               acc.push(existingProduct);
@@ -420,6 +424,7 @@ const AddAccountModal = ({ show, onHide }) => {
       setSelectedClient("");
       setSearchTerm("");
       setOrderItems({});
+      setProducts([]);
       onHide(); // Close the modal after saving
     } catch (error) {
       console.error("Errore durante il salvataggio del conto:", error);
@@ -440,7 +445,7 @@ const AddAccountModal = ({ show, onHide }) => {
         </Modal.Title>
       </Modal.Header>
       <Modal.Body>
-        <Form>
+        <Form onSubmit={saveOrUpdateAccount}>
           <Form.Group controlId="clientChoice" className="mb-2">
             <Form.Label>Cliente</Form.Label>
             <Form.Control
@@ -571,11 +576,7 @@ const AddAccountModal = ({ show, onHide }) => {
           <Modal.Footer
             style={{ position: "sticky", bottom: 0, backgroundColor: "white" }}
           >
-            <Button
-              variant="primary"
-              onClick={saveOrUpdateAccount}
-              disabled={isLoading}
-            >
+            <Button variant="primary" type="submit" disabled={isLoading}>
               {isLoading ? "Salvataggio in corso..." : "Salva Conto"}
             </Button>
           </Modal.Footer>
