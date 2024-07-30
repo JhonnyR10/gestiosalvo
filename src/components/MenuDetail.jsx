@@ -5,14 +5,7 @@ import { doc, getDoc } from "firebase/firestore";
 import { db } from "../firebaseConfig";
 import Navbar from "./Navbar";
 import { Card, Spinner, Table } from "react-bootstrap";
-import {
-  Pencil,
-  Person,
-  Phone,
-  Plus,
-  Trash,
-  Truck,
-} from "react-bootstrap-icons";
+import { Pencil, Person, Plus, Trash, Truck } from "react-bootstrap-icons";
 import ModalDeleteMenu from "./ModalDeleteMenu";
 import ModalEditMenu from "./ModalEditMenu";
 import EditMenuProductModal from "./EditMenuProductModal";

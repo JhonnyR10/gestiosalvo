@@ -165,6 +165,7 @@ import HomeConti from "./components/HomeConti";
 import ClientsList from "./components/ClientsList";
 import MenuList from "./components/MenuList";
 import MenuDetail from "./components/MenuDetail";
+import ClientProfile from "./components/ClientProfile";
 
 const App = () => {
   const { currentUser, loading } = useAuth();
@@ -199,6 +200,7 @@ const App = () => {
           <Route path="/listOrd" element={<OrdersList />} />
           <Route path="/homeConti" element={<HomeConti />} />
           <Route path="/clientsList" element={<ClientsList />} />
+          <Route path="/clientsList/:id" element={<ClientProfile />} />
           <Route path="/menuList" element={<MenuList />} />
           <Route path="/menuList/:id" element={<MenuDetail />} />
         </>

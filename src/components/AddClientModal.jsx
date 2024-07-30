@@ -28,6 +28,7 @@ const AddClientModal = ({ show, onHide }) => {
         accounts: [],
       };
       const docRef = await addDoc(collection(db, "clienti"), clientData);
+      // eslint-disable-next-line no-unused-vars
       const clientRef = docRef.id;
       setName("");
       setSurname("");

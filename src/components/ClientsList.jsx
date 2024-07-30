@@ -1,6 +1,6 @@
 import Navbar from "./Navbar";
 import logo from "../logoGestioSalvo2.png";
-import { Card, Form, Table, Spinner } from "react-bootstrap";
+import { Card, Form, Spinner } from "react-bootstrap";
 import { Eye, Pencil, Plus, Trash } from "react-bootstrap-icons";
 import { useEffect, useState } from "react";
 import AddClientModal from "./AddClientModal";
@@ -17,7 +17,7 @@ const ClientsList = () => {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   const navigate = useNavigate();
-  const [showDelete, setShowDelete] = useState(false);
+  // const [showDelete, setShowDelete] = useState(false);
   const [showEdit, setShowEdit] = useState(false);
   const [selectedClient, setSelectedClient] = useState(null);
 
@@ -37,15 +37,15 @@ const ClientsList = () => {
     setSelectedClient(null);
   };
 
-  const handleShowDelete = (client) => {
-    setSelectedClient(client);
-    setShowDelete(true);
-  };
+  // const handleShowDelete = (client) => {
+  //   setSelectedClient(client);
+  //   setShowDelete(true);
+  // };
 
-  const handleCloseDelete = () => {
-    setShowDelete(false);
-    setSelectedClient(null);
-  };
+  // const handleCloseDelete = () => {
+  //   setShowDelete(false);
+  //   setSelectedClient(null);
+  // };
 
   useEffect(() => {
     const fetchClients = async () => {
@@ -130,18 +130,18 @@ const ClientsList = () => {
                     <div className="d-flex justify-content-between align-items-center pb-2">
                       <Card.Title
                         className=" m-0"
-                        onClick={() => navigate(`/menuList/${client.id}`)}
+                        onClick={() => navigate(`/clientsList/${client.id}`)}
                       >
                         {client.name} {client.surname}
                       </Card.Title>
                       <Eye
                         className=""
-                        onClick={() => navigate(`/menuList/${client.id}`)}
+                        onClick={() => navigate(`/clientsList/${client.id}`)}
                       ></Eye>
                     </div>
                     <div className="d-flex justify-content-between align-items-center pb-2">
                       <p className="mb-0">
-                        Conti: {client.products ? client.products.length : 0}
+                        Conti: {client.accounts ? client.accounts.length : 0}
                       </p>
                       <Pencil
                         className="text-warning"

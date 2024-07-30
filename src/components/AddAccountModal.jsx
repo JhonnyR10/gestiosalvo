@@ -220,6 +220,7 @@ const AddAccountModal = ({ show, onHide }) => {
   const [showSelectedOnly, setShowSelectedOnly] = useState(false);
   const [orderItems, setOrderItems] = useState({});
   const [activeCategory, setActiveCategory] = useState("all");
+  const [total, setTotal] = useState(0);
 
   const fetchMenu = async () => {
     try {
@@ -253,6 +254,17 @@ const AddAccountModal = ({ show, onHide }) => {
     fetchClients();
   }, [show]);
 
+  const resetForm = () => {
+    setSelectedMenu("");
+    setSelectedClient("");
+    setSearchTerm("");
+    setOrderItems({});
+    setProducts([]);
+    setShowSelectedOnly(false);
+    setActiveCategory("all");
+    setTotal(0);
+  };
+
   const categories = Array.from(
     new Set(products.map((p) => p.category))
   ).filter(Boolean);
@@ -271,16 +283,26 @@ const AddAccountModal = ({ show, onHide }) => {
   );
 
   const handleProductChange = (productId, key, value) => {
-    setOrderItems((prevItems) => ({
-      ...prevItems,
-      [productId]: {
-        ...prevItems[productId],
-        [key]: value,
-      },
-    }));
-    //    setUnsavedChanges(true);
+    setOrderItems((prevItems) => {
+      const updatedItems = {
+        ...prevItems,
+        [productId]: {
+          ...prevItems[productId],
+          [key]: value,
+        },
+      };
+      calculateTotal(updatedItems);
+      return updatedItems;
+    });
   };
-
+  const calculateTotal = (orderItems) => {
+    const total = Object.keys(orderItems).reduce((acc, productId) => {
+      const product = products.find((p) => p.id === productId);
+      const quantity = Number(orderItems[productId]?.quantity) || 0;
+      return acc + product.price * quantity;
+    }, 0);
+    setTotal(total);
+  };
   //   const saveOrUpdateAccount = async () => {
   //     setIsLoading(true);
   //     try {
@@ -395,6 +417,11 @@ const AddAccountModal = ({ show, onHide }) => {
 
         await updateDoc(existingAccountDoc.ref, {
           products: updatedProducts,
+          total: updatedProducts.reduce(
+            (acc, p) => acc + p.price * p.quantity,
+            0
+          ),
+          updatedBy: currentUser.displayName || currentUser.email,
           updatedAt: new Date(), // Optionally track when the account was last updated
         });
       } else {
@@ -402,8 +429,9 @@ const AddAccountModal = ({ show, onHide }) => {
         const docRef = await addDoc(collection(db, "conti"), {
           clientId: selectedClient,
           products: newProducts,
-          createdAt: new Date(),
+          total: newProducts.reduce((acc, p) => acc + p.price * p.quantity, 0),
           createdBy: currentUser.displayName || currentUser.email,
+          createdAt: new Date(),
         });
         const newAccountId = docRef.id;
 
@@ -420,12 +448,8 @@ const AddAccountModal = ({ show, onHide }) => {
           await updateDoc(clientDocRef, { accounts: updatedAccounts });
         }
       }
-      setSelectedMenu("");
-      setSelectedClient("");
-      setSearchTerm("");
-      setOrderItems({});
-      setProducts([]);
-      onHide(); // Close the modal after saving
+      resetForm();
+      onHide();
     } catch (error) {
       console.error("Errore durante il salvataggio del conto:", error);
     } finally {
@@ -434,7 +458,7 @@ const AddAccountModal = ({ show, onHide }) => {
   };
 
   return (
-    <Modal show={show} onHide={onHide} centered>
+    <Modal show={show} onHide={onHide} onExited={resetForm} centered>
       <Modal.Header
         closeButton
         className="d-flex justify-content-center align-items-center pb-4 w-100 border-bottom border-3 border-primary"
