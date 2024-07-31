@@ -432,6 +432,7 @@ const AddAccountModal = ({ show, onHide }) => {
           total: newProducts.reduce((acc, p) => acc + p.price * p.quantity, 0),
           createdBy: currentUser.displayName || currentUser.email,
           createdAt: new Date(),
+          active: true,
         });
         const newAccountId = docRef.id;
 

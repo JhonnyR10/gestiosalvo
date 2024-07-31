@@ -8,6 +8,7 @@ import { doc, getDoc } from "firebase/firestore";
 import { db } from "../firebaseConfig";
 import Navbar from "./Navbar";
 import SupplierPhoneNumber from "./SupplierPhoneNumber";
+import AddCreditModal from "./AddCreditModal";
 
 const ClientProfile = () => {
   const { id } = useParams();
@@ -16,9 +17,12 @@ const ClientProfile = () => {
   const [loading, setLoading] = useState(true);
   const [accounts, setAccounts] = useState([]);
   const [showAddAccountModal, setShowAddAccountModal] = useState(false);
+  const [showAddCreditModal, setShowAddCreditModal] = useState(false);
 
   const handleShowAddAccountModal = () => setShowAddAccountModal(true);
   const handleCloseAddAccountModal = () => setShowAddAccountModal(false);
+  const handleShowAddCreditModal = () => setShowAddCreditModal(true);
+  const handleCloseAddCreditModal = () => setShowAddCreditModal(false);
 
   useEffect(() => {
     const fetchClientAndAccounts = async () => {
@@ -56,7 +60,8 @@ const ClientProfile = () => {
     };
 
     fetchClientAndAccounts();
-  }, [id, showAddAccountModal]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [id, showAddAccountModal, showAddCreditModal]);
 
   const formatTimestamp = (timestamp) => {
     if (!timestamp) return "";
@@ -68,10 +73,17 @@ const ClientProfile = () => {
       day: "numeric",
     });
   };
+  const calculateTotalDebt = () => {
+    return accounts.reduce((total, account) => {
+      return account.active ? total + (account.total || 0) : total;
+    }, 0);
+  };
 
   if (loading) {
     return <p>Caricamento...</p>;
   }
+  const totalDebt = calculateTotalDebt();
+  const totalCredit = client ? client.credit : 0;
 
   return client ? (
     <>
@@ -80,22 +92,14 @@ const ClientProfile = () => {
         <Card className="login-card mb-4">
           <Card.Body className="p-0 py-4">
             <div className="d-flex flex-column justify-content-center align-items-center">
-              <div className="d-flex justify-content-center align-items-center pb-4 mb-4 w-100 border-bottom border-3 border-primary">
-                <Truck className="col-4"></Truck>
-                <Card.Title className=" col-8 fs-3 m-0">
-                  {client.name} {client.surname}
-                </Card.Title>
-              </div>
-              <div className="d-flex flex-column justify-content-center align-items-center w-100">
-                <div className=" w-100 mb-4">
-                  <div className="d-flex justify-content-center align-items-center pb-4">
-                    <Phone className="col-2"></Phone>
-                    <p className="col-6 m-0 ">{client.phoneNumber}</p>
-                    {/* <p>Telefono: {supplier.phoneNumber}</p> */}
-                    <p className=" col-4 mb-0">
-                      Conti: {client.accounts ? client.accounts.length : 0}
-                    </p>
-                  </div>
+              <div className="d-flex row pb-1 mb-4 w-100 border-bottom border-3 border-primary">
+                <span className="col-12 d-flex justify-content-center align-items-center mb-2">
+                  <Truck className=" me-2"></Truck>
+                  <Card.Title className=" fs-3 m-0">
+                    {client.name} {client.surname}
+                  </Card.Title>
+                </span>
+                <span className="col-12">
                   <div className="d-flex justify-content-center align-items-center">
                     <div className="col-6 border-end  py-2">
                       <div
@@ -116,17 +120,50 @@ const ClientProfile = () => {
                       </div>
                     </div>
                   </div>
+                </span>
+              </div>
+              <div className="d-flex flex-column justify-content-center align-items-center w-100">
+                <div className=" w-100 mb-4">
+                  <div className="d-flex justify-content-center align-items-center pb-4">
+                    <Phone className="col-2"></Phone>
+                    <span className="col-6">
+                      <SupplierPhoneNumber phoneNumber={client.phoneNumber} />
+                    </span>
+                    {/* <p>Telefono: {supplier.phoneNumber}</p> */}
+                    <p className=" col-4 mb-0">
+                      Conti: {client.accounts ? client.accounts.length : 0}
+                    </p>
+                  </div>
+                  <div className="d-flex justify-content-center align-items-center">
+                    <p className="col-5 m-0 text-center">
+                      Totale Debito: €{totalDebt.toFixed(2)}
+                    </p>
+                    <p className="col-5 m-0 text-center">
+                      Totale Credito: €{totalCredit.toFixed(2)}
+                    </p>
+                  </div>
                 </div>
-                <div className=" d-flex justify-content-center align-items-center w-100">
-                  <Plus className="me-2"></Plus>
+                <div className=" d-flex justify-content-between align-items-center w-100">
+                  <Plus className="ms-2"></Plus>
 
-                  <p className="mb-0" onClick={handleShowAddAccountModal}>
+                  <p className="mb-0 " onClick={handleShowAddAccountModal}>
                     Aggiungi Conto
+                  </p>
+                  <Plus className=""></Plus>
+
+                  <p className="mb-0 me-2" onClick={handleShowAddCreditModal}>
+                    Aggiungi Credito
                   </p>
                 </div>
                 <AddAccountModal
                   show={showAddAccountModal}
                   onHide={handleCloseAddAccountModal}
+                />
+                <AddCreditModal
+                  show={showAddCreditModal}
+                  onHide={handleCloseAddCreditModal}
+                  clientId={id}
+                  currentCredit={totalCredit}
                 />
               </div>
             </div>
@@ -162,7 +199,7 @@ const ClientProfile = () => {
                       {/* <p className="mb-0">
                         Cell: {account.phoneNumber ? account.phoneNumber : 0}
                       </p> */}
-                      {/* <SupplierPhoneNumber phoneNumber={account.phoneNumber} /> */}
+
                       <p className="mb-0">
                         N° prodotti: {account.products.length}
                       </p>

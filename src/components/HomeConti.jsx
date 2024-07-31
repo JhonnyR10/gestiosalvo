@@ -6,16 +6,21 @@ import Navbar from "./Navbar";
 import logo from "../logoGestioSalvo2.png";
 import AddMenuProductModal from "./AddMenuProductModal";
 import AddAccountModal from "./AddAccountModal";
+import AddClientModal from "./AddClientModal";
 
 const HomeConti = () => {
   const [showAddProductModal, setShowAddProductModal] = useState(false);
   const [showAddAccountModal, setShowAddAccountModal] = useState(false);
+  const [showAddClientModal, setShowAddClientModal] = useState(false);
 
   const handleShowAddProductModal = () => setShowAddProductModal(true);
   const handleCloseAddProductModal = () => setShowAddProductModal(false);
 
   const handleShowAddAccounttModal = () => setShowAddAccountModal(true);
   const handleCloseAddAccountModal = () => setShowAddAccountModal(false);
+
+  const handleShowAddClientModal = () => setShowAddClientModal(true);
+  const handleCloseAddClientModal = () => setShowAddClientModal(false);
   return (
     <>
       <Navbar />
@@ -70,11 +75,15 @@ const HomeConti = () => {
                   <Plus className="col-4"></Plus>
                   <p
                     className=" col-8 nav-link mb-0"
-                    onClick={handleShowAddProductModal}
+                    onClick={handleShowAddClientModal}
                   >
                     Aggiungi Cliente
                   </p>
                 </div>
+                <AddClientModal
+                  show={showAddClientModal}
+                  onHide={handleCloseAddClientModal}
+                />
               </div>
             </div>
           </Card.Body>

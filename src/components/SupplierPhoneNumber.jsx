@@ -22,7 +22,7 @@ const SupplierPhoneNumber = ({ phoneNumber }) => {
       {phoneNumber ? (
         <Dropdown className="p-0">
           <Dropdown.Toggle variant="" id="dropdown-basic" className="p-0">
-            Cell: {phoneNumber}
+            {phoneNumber}
           </Dropdown.Toggle>
 
           <Dropdown.Menu>
@@ -31,7 +31,7 @@ const SupplierPhoneNumber = ({ phoneNumber }) => {
           </Dropdown.Menu>
         </Dropdown>
       ) : (
-        <p className="mb-0">Cell: N/A</p>
+        <p className="mb-0">N/A</p>
       )}
       {showAlert &&
         ReactDOM.createPortal(

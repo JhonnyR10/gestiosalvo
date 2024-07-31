@@ -1,7 +1,14 @@
 import React, { useEffect, useState } from "react";
 import { db } from "../firebaseConfig";
 import { Card, CardBody } from "react-bootstrap";
-import { CardList, Eye, Pencil, Plus, Trash } from "react-bootstrap-icons";
+import {
+  CardList,
+  Eye,
+  Pencil,
+  Phone,
+  Plus,
+  Trash,
+} from "react-bootstrap-icons";
 import { NavLink, useNavigate } from "react-router-dom";
 import ModalDeleteSupp from "./ModalDeleteSupp";
 import ModalEditSupp from "./ModalEditSupp";
@@ -111,7 +118,12 @@ const SupplierList = () => {
                       {/* <p className="mb-0">
                         Cell: {supplier.phoneNumber ? supplier.phoneNumber : 0}
                       </p> */}
-                      <SupplierPhoneNumber phoneNumber={supplier.phoneNumber} />
+                      <span className="d-flex align-items-center">
+                        <Phone className="me-2"></Phone>
+                        <SupplierPhoneNumber
+                          phoneNumber={supplier.phoneNumber}
+                        />
+                      </span>
                       <Trash
                         className="text-danger"
                         onClick={() => handleShowDelete(supplier)}

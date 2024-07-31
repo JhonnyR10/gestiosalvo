@@ -1,4 +1,4 @@
-import { Card, CardBody } from "react-bootstrap";
+import { Card, CardBody, Spinner } from "react-bootstrap";
 import Navbar from "./Navbar";
 import { CardList, Eye, Pencil, Plus, Trash } from "react-bootstrap-icons";
 import BackToTopButton from "./BackToTopButton";
@@ -12,6 +12,7 @@ import ModalDeleteMenu from "./ModalDeleteMenu";
 
 const MenuList = () => {
   const [menu, setMenu] = useState([]);
+  const [isLoading, setIsLoading] = useState(false);
   const navigate = useNavigate();
   const [selectedMenu, setSelectedMenu] = useState(null);
   const [showAddProductModal, setShowAddProductModal] = useState(false);
@@ -43,6 +44,7 @@ const MenuList = () => {
 
   useEffect(() => {
     const fetchMenu = async () => {
+      setIsLoading(true);
       try {
         const menuSnapshot = await getDocs(collection(db, "menu"));
         const menuList = menuSnapshot.docs.map((doc) => ({
@@ -52,6 +54,8 @@ const MenuList = () => {
         setMenu(menuList);
       } catch (error) {
         console.log("Errore durante il recupero dei prodotti:", error);
+      } finally {
+        setIsLoading(false);
       }
     };
     fetchMenu();
@@ -131,9 +135,15 @@ const MenuList = () => {
               ))}
             </div>
           </div>
-        ) : (
-          <p>Nessun fornitore trovato.</p>
-        )}
+        ) : isLoading ? (
+          <div
+            className="d-flex flex-column justify-content-center align-items-center"
+            style={{ height: "200px" }}
+          >
+            <Spinner animation="border" role="status" variant="dark"></Spinner>
+            <div className="sr-only mt-2">Caricando i menu...</div>
+          </div>
+        ) : null}
 
         {selectedMenu && (
           <>
