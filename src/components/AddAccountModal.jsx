@@ -364,11 +364,13 @@ const AddAccountModal = ({ show, onHide }) => {
     setIsLoading(true);
     try {
       // Check if an account already exists for the client today
-      const today = new Date().toISOString().slice(0, 10); // Format YYYY-MM-DD
+      const now = new Date();
+      const localOffset = now.getTimezoneOffset() * 60000;
+      const localDate = new Date(now - localOffset).toISOString().slice(0, 10);
       const accountQuery = query(
         collection(db, "conti"),
         where("clientId", "==", selectedClient),
-        where("createdAt", ">=", Timestamp.fromDate(new Date(today)))
+        where("createdAt", ">=", Timestamp.fromDate(new Date(localDate)))
       );
       const existingAccountsSnapshot = await getDocs(accountQuery);
 
